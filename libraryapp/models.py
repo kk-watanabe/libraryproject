@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Book(models.Model):
@@ -12,7 +13,7 @@ class Book(models.Model):
     publication_date = models.DateField()
     cover_image = models.ImageField(null=True, blank=True)
     edition_number = models.IntegerField()
-    is_rented = models.BooleanField(default=False, verbose_name="貸出可")
+    is_borrowed = models.BooleanField(default=False, verbose_name="貸出可")
 
     def __str__(self):
         return self.title
@@ -40,5 +41,16 @@ class Stock(models.Model):
         return self.isbn.title
 
 class Borrow(models.Model):
-    user = models.ForeignKey()
-    book = models.ForeignKey(Stock, )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(
+        Stock,
+        on_delete=models.CASCADE,
+        related_name="borrows"
+    )
+    borrowed_at = models.DateTimeField(auto_now_add=True)
+    due_date = models.DateField()
+    returned_at = models.DateTimeField(null=True, blank=True)
+    is_returned = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.book.title} - {self.user.username}"
