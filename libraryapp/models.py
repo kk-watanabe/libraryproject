@@ -13,7 +13,6 @@ class Book(models.Model):
     publication_date = models.DateField()
     cover_image = models.ImageField(null=True, blank=True)
     edition_number = models.IntegerField()
-    is_borrowed = models.BooleanField(default=False, verbose_name="貸出可")
 
     def __str__(self):
         return self.title
@@ -25,32 +24,30 @@ class BookShelf(models.Model):
         return self.bookshelf_name
 
 class Stock(models.Model):
-    isbn = models.ForeignKey(Book,
+    book = models.ForeignKey(
+        Book,
         on_delete=models.CASCADE,
-        related_name="Stocks",
-        default=1
+        related_name="stocks"
     )
     bookshelf_name = models.ForeignKey(
         BookShelf,
         on_delete=models.CASCADE,
-        related_name="Stocks",
-        default=1
+        related_name="stocks"
     )
 
     def __str__(self):
-        return self.isbn.title
+        return f"{self.book.title} ({self.id})"
 
 class Borrow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(
+    stock = models.ForeignKey(
         Stock,
         on_delete=models.CASCADE,
         related_name="borrows"
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     borrowed_at = models.DateTimeField(auto_now_add=True)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
-    is_returned = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.book.title} - {self.user.username}"
+        return f"{self.stock.book.title} - {self.user.username}"

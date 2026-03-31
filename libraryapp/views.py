@@ -45,7 +45,9 @@ def get_book_by_id(request, id):
 
 @login_required
 def borrow_book(request, stock_id):
-    book = get_object_or_404(Stock, id=stock_id)
+    stock = get_object_or_404(Stock, id=stock_id)
+    
+    if book
 
     Borrow.objects.create(
         book=book,
