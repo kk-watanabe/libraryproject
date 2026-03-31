@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>本の詳細</title>
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <hr>
+    <p><strong>著者名：</strong>{{ book.author }}</p>
+    <p><storng>出版日：</strong>{{ book.publication_date }}</p>
+    <p>表紙画像：
+    {% if book.cover_image %}
+        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
+    {% else %}
+        未設定
+    {% endif %}
+    </p>
+    <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
+        検索結果一覧へ戻る
+    </a>
+</body>
+</html>

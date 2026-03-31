@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+    <meta charset="UTF-8">
+    <title>サインアップ</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>サインアップ画面</h1>
+        <form method='post'>
+            {% csrf_token %}
+            <p>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.username.errors }}
+            </p>
+            <p>{{ form.password1.label_tag }}{{ form.password1 }}</p>
+            <p>{{ form.password2.label_tag }}{{ form.password2 }}</p>
+            <button type="submit">サインアップ</button>
+        </form>
+    </div>
+</body>
+</html>
