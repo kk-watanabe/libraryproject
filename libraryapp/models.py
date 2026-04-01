@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your models here.
 class Book(models.Model):
@@ -17,11 +19,11 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-class BookShelf(models.Model):
-    bookshelf_name = models.CharField(max_length=200)
+class Location(models.Model):
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.bookshelf_name
+        return self.name
 
 class Stock(models.Model):
     book = models.ForeignKey(
@@ -29,11 +31,12 @@ class Stock(models.Model):
         on_delete=models.CASCADE,
         related_name="stocks"
     )
-    bookshelf_name = models.ForeignKey(
-        BookShelf,
-        on_delete=models.CASCADE,
+    location = models.ForeignKey(
+        Location,
+        on_delete=models.PROTECT,
         related_name="stocks"
     )
+    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.book.title} ({self.id})"
@@ -45,9 +48,14 @@ class Borrow(models.Model):
         related_name="borrows"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    borrowed_at = models.DateTimeField(auto_now_add=True)
+    borrowed_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        if not self.due_date:
+            self.due_date = timezone.now().date() + timedelta(days=14)
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return f"{self.stock.book.title} - {self.user.username}"

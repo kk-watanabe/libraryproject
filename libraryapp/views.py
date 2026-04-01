@@ -1,5 +1,5 @@
-from django.views.generic import TemplateView, ListView
-from django.shortcuts import render, get_object_or_404
+from django.views.generic import TemplateView, ListView, DetailView, View
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book, Stock, Borrow
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -38,22 +38,88 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     #    'query': query # 検索キーワード保持
     #})
 
-@login_required
-def get_book_by_id(request, id):
-    book = get_object_or_404(Book, id=id)
-    return render(request, 'libraryapp/book_detail.html', {'book': book})
-
-@login_required
-def borrow_book(request, stock_id):
-    book = get_object_or_404(Stock, id=stock_id)
+class BookDetailView(LoginRequiredMixin, DetailView):
+    model = Book
+    template_name = "libraryapp/book_detail.html"
+    context_object_name = "book"
     
-    #if book
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    Borrow.objects.create(
-        book=book,
-        user=request.user,
-        due_date=timezone.now().date() + timedelta(days=14)
-    )
+        available_stock = self.object.stocks.filter(
+            is_available=True
+        ).first()
+        
+        context["available_stock"] = available_stock
+        context["is_available"] = available_stock is not None
+        
+        return context
 
-    book.is_borrowed = True
-    book.save()
+class BorrowConfirmView(LoginRequiredMixin, View):
+    template_name = "libraryapp/borrow_confirm.html"
+    
+    def get(self, request, *args, **kwargs):
+        stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
+
+        return render(
+            request,
+            self.template_name,
+            {"stock": stock}
+        )
+    
+    def post(self, request, *args, **kwargs):
+        stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
+        
+        if not stock.is_available:
+            return redirect('book_detail', pk=stock.book.pk)
+        
+        Borrow.objects.create(
+            stock=stock,
+            user=request.user
+        )
+        
+        stock.is_available = False
+        stock.save()
+        
+        return redirect('borrow_complete', stock_id=stock.pk)
+
+class BorrowCompleteView(LoginRequiredMixin, TemplateView):
+    template_name = "libraryapp/borrow_complete.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["stock"] = get_object_or_404(
+            Stock,
+            pk=self.kwargs["stock_id"]
+        )
+        return context
+
+class ReturnView(LoginRequiredMixin, View):
+    template_name = "libraryapp/book_return.html"
+    
+    def get(self, request, *args, **kwargs):
+        borrow = get_object_or_404(
+            Borrow,
+            pk=kwargs["borrow_id"],
+            returned_at__isnull=True
+        )
+
+        return render(
+            request,
+            self.template_name,
+            {"borrow": borrow}
+        )
+    
+    def post(self, request, borrow_id):
+        borrow = get_object_or_404(
+            Borrow,
+            pk=borrow_id,
+            returned_at__isnull=True
+        )
+        
+        borrow.returned_at = timezone.now()
+        borrow.save()
+        
+        borrow.stock.is_available = True
+        borrow.stock.save()
+        

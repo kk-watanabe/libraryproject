@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>貸出確認</title>
+</head>
+<body>
+    <h2>貸出確認</h2>
+    <p>「{{ stock.book.title }}」を貸し出しますか？</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">確定</button>
+    </form>
+</body>
+</html>

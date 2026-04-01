@@ -4,5 +4,8 @@ from . import views
 urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     path('search/results/', views.SearchResultsView.as_view(), name='search_results'),
-    path('book/<int:id>', views.get_book_by_id, name='book_detail'),
+    path('book/<int:pk>/', views.BookDetailView.as_view(), name='book_detail'),
+    path('borrow/<int:stock_id>/', views.BorrowConfirmView.as_view(), name='borrow_confirm'),
+    path('borrow/complete/<int:stock_id>/', views.BorrowCompleteView.as_view(), name='borrow_complete'),
+    path('return/<int:borrow_id>/', views.ReturnView.as_view(), name='return_book'),
 ]
