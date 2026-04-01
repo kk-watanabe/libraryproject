@@ -4,26 +4,26 @@ from .models import Book, Stock, Borrow
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from datetime import timedelta
 
 # Create your views here.
-@login_required
-class SearchView(TemplateView):
+class SearchView(LoginRequiredMixin, TemplateView):
     template_name="libraryapp/search.html"
 
-@login_required
-class SearchResultsView(ListView):
+class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "libraryapp/search_results.html"
     context_object_name = "book_list"
     paginate_by = 5
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q', '')
 
         # 検索フィルタリング
-        return Book.objects.filter(
+        return queryset.filter(
                 Q(title__icontains=query) |
                 Q(author__icontains=query)
         )
@@ -45,9 +45,9 @@ def get_book_by_id(request, id):
 
 @login_required
 def borrow_book(request, stock_id):
-    stock = get_object_or_404(Stock, id=stock_id)
+    book = get_object_or_404(Stock, id=stock_id)
     
-    if book
+    #if book
 
     Borrow.objects.create(
         book=book,
