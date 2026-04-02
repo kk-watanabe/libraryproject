@@ -94,6 +94,17 @@ class BorrowCompleteView(LoginRequiredMixin, TemplateView):
         )
         return context
 
+class MyPageView(LoginRequiredMixin, ListView):
+    model = Borrow
+    template_name = "libraryapp/mypage.html"
+    context_object_name = "borrows"
+
+    def get_queryset(self):
+        return Borrow.objects.filter(
+            user=self.request.user,
+            returned_at__isnull=True
+        ).select_related("stock__book")
+
 class ReturnView(LoginRequiredMixin, View):
     template_name = "libraryapp/book_return.html"
     
@@ -122,4 +133,6 @@ class ReturnView(LoginRequiredMixin, View):
         
         borrow.stock.is_available = True
         borrow.stock.save()
+
+        return redirect("mypage")
         
