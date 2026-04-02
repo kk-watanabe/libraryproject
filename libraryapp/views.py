@@ -70,8 +70,8 @@ class BorrowConfirmView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
         
-        if not stock.is_available:
-            return redirect('book_detail', pk=stock.book.pk)
+        #if not stock.is_available:
+        #    return redirect('book_detail', pk=stock.book.pk)
         
         Borrow.objects.create(
             stock=stock,

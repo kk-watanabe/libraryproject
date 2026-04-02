@@ -5,13 +5,13 @@
     <title>本の詳細</title>
 </head>
 <body>
-    <h1>{{ object.title }}</h1>
+    <h1>{{ book.title }}</h1>
     <hr>
-    <p><strong>著者名：</strong>{{ object.author }}</p>
-    <p><strong>出版日：</strong>{{ object.publication_date }}</p>
+    <p><strong>著者名：</strong>{{ book.author }}</p>
+    <p><strong>出版日：</strong>{{ book.publication_date }}</p>
     <p>表紙画像：
-    {% if object.cover_image %}
-        <img src="{{ object.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
+    {% if book.cover_image %}
+        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
     {% else %}
         未設定
     {% endif %}
@@ -19,9 +19,6 @@
     {% if is_available %}
         <p>状態：貸出可能</p>
 
-        
-        
-        
         <!--<form method="post" action="{% url 'borrow_confirm' available_stock.id %}">
             {% csrf_token %}
             <button type="submit">貸出する</button>
@@ -32,6 +29,7 @@
     {% else %}
         <p>状態：貸出中</p>
     {% endif %}
+    <br>
     <br>
     <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
         検索結果一覧へ戻る
