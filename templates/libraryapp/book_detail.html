@@ -19,12 +19,12 @@
     {% if is_available %}
         <p>状態：貸出可能</p>
 
-        <a href="{% url 'borrow_confirm' available_stock.id %}">貸出する</a>
+        <a href="{% url 'borrow_confirm' stock.id %}">貸出する</a>
 
     {% else %}
         <p>状態：貸出中</p>
 
-        <a href="{% url 'reserve_book' stock.id %}">予約する</a>
+        <a href="{% url 'reserve_book' book.id %}">予約する</a>
     {% endif %}
     <br>
     <br>

@@ -47,10 +47,10 @@ class Stock(models.Model):
 class Borrow(models.Model):
     stock = models.ForeignKey(
         Stock,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="borrows"
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     borrowed_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
@@ -64,14 +64,19 @@ class Borrow(models.Model):
         return f"{self.stock.book.title} - {self.user.username}"
     
 class Reservation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reservations")
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.PROTECT,
+        related_name="reservations")
     reserved_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ["reserved_at"]
-        unique_together = ("user", "stock")
+        unique_together = ("user", "book")
 
     def __str__(self):
-        return f"{self.user.username} - {self.stock.book.title}" 
+        return f"{self.user.username} - {self.book.title}" 

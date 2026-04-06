@@ -46,14 +46,12 @@ class BookDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        available_stock = self.object.stocks.filter(
+        stock = self.object.stocks.filter(
             is_available=True
         ).first()
         
-        context["available_stock"] = available_stock
-        context["is_available"] = available_stock is not None
-        context["stock"] = Stock.objects.filter(book=self.object).first()
-        
+        context["stock"] = stock
+        context["is_available"] = stock is not None    
         return context
 
 class BorrowConfirmView(LoginRequiredMixin, View):
@@ -70,9 +68,6 @@ class BorrowConfirmView(LoginRequiredMixin, View):
     
     def post(self, request, *args, **kwargs):
         stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
-        
-        #if not stock.is_available:
-        #    return redirect('book_detail', pk=stock.book.pk)
         
         Borrow.objects.create(
             stock=stock,
@@ -109,11 +104,9 @@ class MyPageView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['reservations'] = Reservation.objects.filter(
-            user=self.request.user,
-            is_active=True
-        ).select_related("stock__book")
+            user=self.request.user
+        ).select_related("book")
         return context
-
 
 class ReturnView(LoginRequiredMixin, View):
     template_name = "libraryapp/book_return.html"
@@ -145,9 +138,7 @@ class ReturnView(LoginRequiredMixin, View):
         borrow.save()
         
         # 予約待ちの先頭ユーザーを取得
-        next_reservation = stock.reservation_set.filter(
-            is_active=True
-        ).first()
+        next_reservation = stock.book.reservations.first()
 
         if next_reservation:
             # 予約者がいるので在庫は貸出不可のまま
@@ -164,17 +155,12 @@ class ReturnView(LoginRequiredMixin, View):
         return redirect("mypage")
     
 @login_required
-def reserve_book(request, stock_id):
-    stock = get_object_or_404(Stock, pk=stock_id)
-
-    # 在庫ありなら予約不要
-    if stock.is_available:
-        return redirect("book_detail", pk=stock.book.pk)
-        
+def reserve_book(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    
     Reservation.objects.get_or_create(
         user=request.user,
-        stock=stock,
-        defaults={"is_active": True}
+        book=book
     )
 
     return redirect('mypage')

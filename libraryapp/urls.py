@@ -9,5 +9,5 @@ urlpatterns = [
     path('borrow/complete/<int:stock_id>/', views.BorrowCompleteView.as_view(), name='borrow_complete'),
     path('mypage/', views.MyPageView.as_view(), name='mypage'),
     path('return/<int:borrow_id>/', views.ReturnView.as_view(), name='return_book'),
-    path('reserve/<int:stock_id>/', views.reserve_book, name='reserve_book'),
+    path('reserve/<int:book_id>/', views.reserve_book, name='reserve_book'),
 ]
