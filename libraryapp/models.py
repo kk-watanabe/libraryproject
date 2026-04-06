@@ -40,6 +40,9 @@ class Stock(models.Model):
 
     def __str__(self):
         return f"{self.book.title} ({self.id})"
+    
+    def is_reserved(self):
+        return self.reservation_set.filter(is_active=True).exists()
 
 class Borrow(models.Model):
     stock = models.ForeignKey(
@@ -59,3 +62,16 @@ class Borrow(models.Model):
         
     def __str__(self):
         return f"{self.stock.book.title} - {self.user.username}"
+    
+class Reservation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    reserved_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["reserved_at"]
+        unique_together = ("user", "stock")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.stock.book.title}" 

@@ -26,6 +26,13 @@
         <p>貸出中の本はありません。</p>
     {% endif %}
     <br>
+    <h2>予約中の本</h2>
+    {% for reservation in reservations %}
+        <p>{{ reservation.stock.book.title }}（{{ reservation.reserved_at }}）</p>
+    {% empty %}
+        <p>予約中の本はありません。</p>
+    {% endfor %}
+    <br>
     <a href="{% url 'search' %}">TOPページに戻る</a>
 </body>
 </html>
