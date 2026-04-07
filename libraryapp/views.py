@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView, ListView, DetailView, View
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Stock, Borrow, Reservation
+from .models import Book, Stock, Borrow, Reservation, HoldStock
 from django.db.models import Q
+from django.db import transaction
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +12,7 @@ from datetime import timedelta
 # Create your views here.
 class SearchView(LoginRequiredMixin, TemplateView):
     template_name="libraryapp/search.html"
+
 
 class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
@@ -38,6 +40,7 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     #    'query': query # 検索キーワード保持
     #})
 
+
 class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
     template_name = "libraryapp/book_detail.html"
@@ -46,17 +49,36 @@ class BookDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        stocks = self.object.stocks
-        stock = stocks.filter(
+        available_stocks = self.object.stocks.filter(
             is_available=True
-        ).first()
-        stocks_count = stocks.count()
-        reservations_count = self.object.reservations
+        )
+        
+        stock = available_stocks.first()
+        stock_count = available_stocks.count()
+        reservation_count = self.object.reservations.count()
+        
+        # 状態判定
+        if stock_count == 0:
+            status = "borrowed"
+            label = "貸出中"
+        elif reservation_count >= stock_count:
+            status = "reservable"
+            label = "予約者待ち（貸出不可）"
+        else:
+            status = "available"
+            label = "貸出可能"
+
+        my_reserved = self.object.reservations.filter(
+            user=self.request.user
+        ).exists()
         
         context["stock"] = stock
-        context["stocks_count"] = stocks_count
-        context["reservations_count"] = reservations_count   
+        context["book_status"] = status
+        context["status_label"] = label
+        context["my_reserved"] = my_reserved
+        
         return context
+
 
 class BorrowConfirmView(LoginRequiredMixin, View):
     template_name = "libraryapp/borrow_confirm.html"
@@ -83,6 +105,7 @@ class BorrowConfirmView(LoginRequiredMixin, View):
         
         return redirect('borrow_complete', stock_id=stock.pk)
 
+
 class BorrowCompleteView(LoginRequiredMixin, TemplateView):
     template_name = "libraryapp/borrow_complete.html"
     
@@ -93,6 +116,7 @@ class BorrowCompleteView(LoginRequiredMixin, TemplateView):
             pk=self.kwargs["stock_id"]
         )
         return context
+
 
 class MyPageView(LoginRequiredMixin, ListView):
     model = Borrow
@@ -107,12 +131,19 @@ class MyPageView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
         context['reservations'] = Reservation.objects.filter(
             user=self.request.user
         ).select_related("book")
+        
+        context['hold_stocks'] = HoldStock.objects.filter(
+            user=self.request.user,
+            is_pickedup=False
+        ).select_related("stock__book")
+        
         return context
 
-class ReturnView(LoginRequiredMixin, View):
+class ReturnBookView(LoginRequiredMixin, View):
     template_name = "libraryapp/book_return.html"
     
     def get(self, request, *args, **kwargs):
@@ -121,16 +152,17 @@ class ReturnView(LoginRequiredMixin, View):
             pk=kwargs["borrow_id"],
             returned_at__isnull=True
         )
-
+        
         return render(
             request,
             self.template_name,
             {"borrow": borrow}
         )
     
+    @transaction.atomic
     def post(self, request, borrow_id):
         borrow = get_object_or_404(
-            Borrow,
+            Borrow.objects.select_related("stock__book"),
             pk=borrow_id,
             returned_at__isnull=True
         )
@@ -140,26 +172,60 @@ class ReturnView(LoginRequiredMixin, View):
         # 返却処理
         borrow.returned_at = timezone.now()
         borrow.save()
-        
-        # 予約待ちの先頭ユーザーを取得
-        #next_reservation = stock.book.reservations.first()
 
         stock.is_available = True
         stock.save()
 
-            # 必要ならここで通知や自動貸出へつなげる
-            # next_reservation.user
+        # 先着順予約を取得
+        reservation = (
+            stock.book.reservations
+            .select_for_update()
+            .first()
+        )
+        print("reservation:", reservation)
+        
+        if reservation:
+            hold = HoldStock.objects.create(
+                user=reservation.user,
+                stock=stock
+            )
+            print("hold:", hold.id)
+        
+            stock.is_available = False
+            stock.save()
+            
+            reservation.delete()
 
         return redirect("mypage")
-    
-@login_required
-def reserve_book(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    
-    Reservation.objects.get_or_create(
-        user=request.user,
-        book=book
-    )
 
-    return redirect('mypage')
     
+class ReserveBookView(LoginRequiredMixin, View):
+    def post(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+    
+        Reservation.objects.get_or_create(
+            user=request.user,
+            book=book
+        )
+
+        return redirect('book_detail', pk=book_id)
+
+
+class PickupBorrowView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        hold = get_object_or_404(
+            HoldStock,
+            pk=pk,
+            user=request.user,
+            is_pickedup=False
+        )
+        
+        Borrow.objects.create(
+            user=request.user,
+            stock=hold.stock
+        )
+        
+        hold.is_pickedup = True
+        hold.save()
+        
+        return redirect("mypage")

@@ -45,12 +45,12 @@ class Stock(models.Model):
     
 
 class Borrow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(
         Stock,
         on_delete=models.PROTECT,
         related_name="borrows"
     )
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
     borrowed_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
@@ -71,13 +71,26 @@ class Reservation(models.Model):
         related_name="reservations")
     book = models.ForeignKey(
         Book,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="reservations")
     reserved_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["reserved_at"]
+        ordering = ["reserved_at"] # 先着順
         unique_together = ("user", "book")
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}" 
+
+
+class HoldStock(models.Model):
+    """
+    返却後、予約者への取り置き
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+    is_pickedup = models.BooleanField(default=False) # 受取済みか
+    
+    def __str__(self):
+        return f"{self.user.username} hold {self.stock.book.title}"

@@ -16,18 +16,23 @@
         未設定
     {% endif %}
     </p>
-    {% if  %}
-        <p>状態：貸出可能</p>
 
+    <p>状態：{{ status_label }}</p>
+    {% if book_status == "available" %}
         <a href="{% url 'borrow_confirm' stock.id %}">貸出する</a>
 
+    {% elif my_reserved %}
+        <p>この本は予約済みです。</p>
+        
     {% else %}
-        <p>状態：貸出中</p>
-
-        <a href="{% url 'reserve_book' book.id %}">予約する</a>
+        <form method="post" action="{% url 'reserve_book' book.id %}">
+            {% csrf_token %}
+            <button type="submit">予約する</button>
+        </form>
     {% endif %}
-    <br>
-    <br>
+
+    <br><br>
+    
     <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
         検索結果一覧へ戻る
     </a>
