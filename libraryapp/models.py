@@ -19,11 +19,13 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+
 class Location(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
 
 class Stock(models.Model):
     book = models.ForeignKey(
@@ -41,8 +43,6 @@ class Stock(models.Model):
     def __str__(self):
         return f"{self.book.title} ({self.id})"
     
-    def is_reserved(self):
-        return self.reservation_set.filter(is_active=True).exists()
 
 class Borrow(models.Model):
     stock = models.ForeignKey(
@@ -62,7 +62,8 @@ class Borrow(models.Model):
         
     def __str__(self):
         return f"{self.stock.book.title} - {self.user.username}"
-    
+
+
 class Reservation(models.Model):
     user = models.ForeignKey(
         User,

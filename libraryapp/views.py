@@ -46,12 +46,16 @@ class BookDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        stock = self.object.stocks.filter(
+        stocks = self.object.stocks
+        stock = stocks.filter(
             is_available=True
         ).first()
+        stocks_count = stocks.count()
+        reservations_count = self.object.reservations
         
         context["stock"] = stock
-        context["is_available"] = stock is not None    
+        context["stocks_count"] = stocks_count
+        context["reservations_count"] = reservations_count   
         return context
 
 class BorrowConfirmView(LoginRequiredMixin, View):
@@ -138,16 +142,10 @@ class ReturnView(LoginRequiredMixin, View):
         borrow.save()
         
         # 予約待ちの先頭ユーザーを取得
-        next_reservation = stock.book.reservations.first()
+        #next_reservation = stock.book.reservations.first()
 
-        if next_reservation:
-            # 予約者がいるので在庫は貸出不可のまま
-            stock.is_available = False
-            stock.save()
-        else:
-            # 予約者がいなければ通常通り返却完了
-            stock.is_available = True
-            stock.save()
+        stock.is_available = True
+        stock.save()
 
             # 必要ならここで通知や自動貸出へつなげる
             # next_reservation.user
