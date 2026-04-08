@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="{% static 'libraryapp/search.css' %}">
 </head>
 <body>
-    <div>
-        <a href="{% url 'mypage' %}">マイページ</a>
-    </div>
+    <header>
+        <div style="text-align: right">
+            <a href="{% url 'mypage' %}">マイページ</a>
+        </div>
+    </header>
     <div class="container">
         <h1>蔵書検索</h1>
         <hr>

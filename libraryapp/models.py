@@ -11,8 +11,10 @@ class Book(models.Model):
         verbose_name='ISBN'
     )
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=200)
+    author = models.CharField(max_length=200, null=True, blank=True)
+    publisher = models.CharField(max_length=200, null=True, blank=True)
     publication_date = models.DateField()
+    description = models.TextField(null=True, blank=True)
     cover_image = models.ImageField(null=True, blank=True)
     edition_number = models.IntegerField()
 

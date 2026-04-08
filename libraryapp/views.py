@@ -58,12 +58,12 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         reservation_count = self.object.reservations.count()
         
         # 状態判定
-        if stock_count == 0:
+        if reservation_count != 0 and reservation_count >= stock_count:
+            status = "reservable"
+            label = "貸出中（予約あり）"
+        elif stock_count == 0:
             status = "borrowed"
             label = "貸出中"
-        elif reservation_count >= stock_count:
-            status = "reservable"
-            label = "予約者待ち（貸出不可）"
         else:
             status = "available"
             label = "貸出可能"
