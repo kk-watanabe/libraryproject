@@ -9,14 +9,15 @@ class Book(models.Model):
         max_length=17,
         help_text='ISBN-10 または ISBN-13（ハイフン可）',
         verbose_name='ISBN'
+        unique=True
     )
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200, null=True, blank=True)
     publisher = models.CharField(max_length=200, null=True, blank=True)
-    publication_date = models.DateField()
+    publication_date = models.DateField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    cover_image = models.ImageField(null=True, blank=True)
-    edition_number = models.IntegerField()
+    cover_image = models.URLField(null=True, blank=True)
+    edition_number = models.IntegerField(default=1)
 
     def __str__(self):
         return self.title

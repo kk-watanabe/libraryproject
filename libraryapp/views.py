@@ -182,14 +182,12 @@ class ReturnBookView(LoginRequiredMixin, View):
             .select_for_update()
             .first()
         )
-        print("reservation:", reservation)
         
         if reservation:
             hold = HoldStock.objects.create(
                 user=reservation.user,
                 stock=stock
             )
-            print("hold:", hold.id)
         
             stock.is_available = False
             stock.save()
@@ -226,6 +224,6 @@ class PickupBorrowView(LoginRequiredMixin, View):
         )
         
         hold.is_pickedup = True
-        hold.save()
+        hold.delete()
         
         return redirect("mypage")
