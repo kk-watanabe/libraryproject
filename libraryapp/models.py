@@ -8,8 +8,8 @@ class Book(models.Model):
     isbn = models.CharField(
         max_length=17,
         help_text='ISBN-10 または ISBN-13（ハイフン可）',
-        verbose_name='ISBN'
-        unique=True
+        verbose_name='ISBN',
+        unique=True,
     )
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200, null=True, blank=True)

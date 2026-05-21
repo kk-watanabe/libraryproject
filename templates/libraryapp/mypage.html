@@ -1,71 +1,68 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>マイページ</title>
-</head>
-<body>
-    <h1>マイページ</h1>
-    <hr>
+{% extends "libraryapp/base.html" %}
 
-    <!-- 貸出中 -->
-    <h2>貸出中の本</h2>
-    {% if borrows %}
-        <ul>
-            {% for borrow in borrows %}
-                <li>
-                    {{ borrow.stock.book.title }}
-                    （返却期限: {{ borrow.due_date }}）
+{% block title %}マイページ{% endblock %}
 
-                    <a href="{% url 'return_book' borrow.id %}">
-                        返却する
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>貸出中の本はありません。</p>
-    {% endif %}
+{% block content %}
+<h1>マイページ</h1>
+<hr>
 
-    <br>
+<!-- 貸出中 -->
+<h2>貸出中の本</h2>
+{% if borrows %}
+    <ul>
+        {% for borrow in borrows %}
+            <li>
+                {{ borrow.stock.book.title }}
+                （返却期限: {{ borrow.due_date }}）
 
-    <!-- 予約中 -->
-    <h2>予約中の本</h2>
-    {% if reservations %}
-        <ul>
-            {% for reservation in reservations %}
-                <li>
-                    {{ reservation.book.title }}
-                    （予約日：{{ reservation.reserved_at|date:"Y-m-d H:i" }}）
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>予約中の本はありません。</p>
-    {% endif %}
+                <a href="{% url 'return_book' borrow.id %}">
+                    返却する
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>貸出中の本はありません。</p>
+{% endif %}
 
-    <br>
+<br>
 
-    <!-- 取り置き中 -->
-    <h2>受取可能な本（取り置き中）</h2>
-    {% if hold_stocks %}
-        <ul>
-            {% for hold in hold_stocks %}
-                <li>
-                    {{ hold.stock.book.title }} <span>【受取待ち】</span>
+<!-- 予約中 -->
+<h2>予約中の本</h2>
+{% if reservations %}
+    <ul>
+        {% for reservation in reservations %}
+            <li>
+                {{ reservation.book.title }}
+                （予約日：{{ reservation.reserved_at|date:"Y-m-d H:i" }}）
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>予約中の本はありません。</p>
+{% endif %}
 
-                    <form method="post" action="{% url 'pickup_borrow' hold.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit">受け取る</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>受取可能な本はありません。</p>
-    {% endif %}
+<br>
 
-    <br>
-    <a href="{% url 'search' %}">TOPページに戻る</a>
-</body>
-</html>
+<!-- 取り置き中 -->
+<h2>受取可能な本（取り置き中）</h2>
+{% if hold_stocks %}
+    <ul>
+        {% for hold in hold_stocks %}
+            <li>
+                {{ hold.stock.book.title }} <span>【受取待ち】</span>
+
+                <form method="post" action="{% url 'pickup_borrow' hold.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">受け取る</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>受取可能な本はありません。</p>
+{% endif %}
+
+<br>
+<a href="{% url 'home' %}">TOPページに戻る</a>
+{% endblock content %}

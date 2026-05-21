@@ -7,8 +7,8 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
     path('library/', include('libraryapp.urls')),
-    path('', LoginView.as_view(template_name='login.html'), name='login'),
     path('signup/', views.SignupView.as_view(), name='signup'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

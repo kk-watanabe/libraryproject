@@ -1,40 +1,37 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>本の詳細</title>
-</head>
-<body>
-    <h1>{{ book.title }}</h1>
-    <hr>
-    <p><strong>著者名：</strong>{{ book.author }}</p>
-    <p><strong>出版日：</strong>{{ book.publication_date }}</p>
-    <p>表紙画像：
-    {% if book.cover_image %}
-        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
-    {% else %}
-        未設定
-    {% endif %}
-    </p>
+{% extends "libraryapp/base.html" %}
 
-    <p>状態：{{ status_label }}</p>
-    {% if book_status == "available" %}
-        <a href="{% url 'borrow_confirm' stock.id %}">貸出する</a>
+{% block title %}詳細情報{% endblock %}
 
-    {% elif my_reserved %}
-        <p>この本は予約済みです。</p>
-        
-    {% else %}
-        <form method="post" action="{% url 'reserve_book' book.id %}">
-            {% csrf_token %}
-            <button type="submit">予約する</button>
-        </form>
-    {% endif %}
+{% block content %}
+<h1>{{ book.title }}</h1>
+<hr>
+<p><strong>著者名：</strong>{{ book.author }}</p>
+<p><strong>出版日：</strong>{{ book.publication_date }}</p>
+<p>表紙画像：
+{% if book.cover_image %}
+    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
+{% else %}
+    未設定
+{% endif %}
+</p>
 
-    <br><br>
+<p>状態：{{ status_label }}</p>
+{% if book_status == "available" %}
+    <a href="{% url 'borrow_confirm' stock.id %}">貸出する</a>
+
+{% elif my_reserved %}
+    <p>この本は予約済みです。</p>
     
-    <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
-        検索結果一覧へ戻る
-    </a>
-</body>
-</html>
+{% else %}
+    <form method="post" action="{% url 'reserve_book' book.id %}">
+        {% csrf_token %}
+        <button type="submit">予約する</button>
+    </form>
+{% endif %}
+
+<br><br>
+
+<a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
+    検索結果一覧へ戻る
+</a>
+{% endblock content %}

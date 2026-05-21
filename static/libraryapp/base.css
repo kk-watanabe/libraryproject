@@ -5,9 +5,28 @@ body {
     margin: 0;
 }
 
-header {
-    text-align: right;
-    padding: 20px 40px;
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px 24px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header h1 {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 30px;
+}
+
+.header nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 8px;
 }
 
 .container {
@@ -15,10 +34,10 @@ header {
     padding: 40px 30px;
     border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
+    max-width: 1000px;
     width: 100%;
     box-sizing: border-box;
-    margin: 200px auto;
+    margin: 50px auto;
 }
 
 /* ===== 見出しのスタイル ===== */
@@ -80,3 +99,21 @@ form button {
     /* フォントの太さを設定 */
     font-weight: 500;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th:first-child,
+td:first-child {
+    text-align: left;
+}
+

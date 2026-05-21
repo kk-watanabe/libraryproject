@@ -1,46 +1,41 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>検索結果一覧</title>
-</head>
-<body>
-    <div class="container">
-        <form method="get" action="{% url 'search_results' %}">
-            <label for="title">検索</label>
-            <input type="text" name="q" placeholder="タイトルまたは著者名で検索"
-                value="{{ request.GET.q|default_if_none:''}}">
-            <button type="submit">検索</button>
-        </form>
-    </div>
-    <hr>
-    <table border="1">
-        <tr>
-            <th>タイトル</th>
-            <th>著者</th>
-            <th>出版日</th>
-            <th>版数</th>
-        </th>
-        {% for book in book_list %}
-        <tr>
-            <td>
-                <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
-                    {{ book.title }}
-                </a>
-            </td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.publication_date }}</td>
-            <td>{{ book.edition_number }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="3">該当する本がありません。</td>
-        </tr>
-        {% endfor %}
-    </table>
+{% extends "libraryapp/base.html" %}
 
-    <br>
+{% block title %}検索結果{% endblock %}
 
-    <a href="{% url 'search' %}">TOPページに戻る</a>
-</body>
-</html>
+{% block content %}
+<form method="get" action="{% url 'search_results' %}">
+    <label for="title">検索</label>
+    <input type="text" name="q" placeholder="タイトルまたは著者名で検索"
+        value="{{ request.GET.q|default_if_none:''}}">
+    <button type="submit">検索</button>
+</form>
+<hr>
+<table border="1">
+    <tr>
+        <th>タイトル</th>
+        <th>著者</th>
+        <th>出版日</th>
+        <th>版数</th>
+    </th>
+    {% for book in book_list %}
+    <tr>
+        <td>
+            <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
+                {{ book.title }}
+            </a>
+        </td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.publication_date }}</td>
+        <td>{{ book.edition_number }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">該当する本がありません。</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="{% url 'home' %}">TOPページに戻る</a>
+{% endblock content %}

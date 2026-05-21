@@ -1,24 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>検索</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'libraryapp/search.css' %}">
-</head>
-<body>
-    <header>
-        <div style="text-align: right">
-            <a href="{% url 'mypage' %}">マイページ</a>
-        </div>
-    </header>
-    <div class="container">
-        <h1>蔵書検索</h1>
-        <hr>
-        <form action="{% url 'search_results' %}" method="get">
-            <input type="text" name="q" placeholder="検索キーワードを入力">
-            <button type="submit">検索</button>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "libraryapp/base.html" %}
+
+{% block title %}TOP{% endblock %}
+
+{% block content %}
+<h1>蔵書検索</h1>
+<hr>
+<form action="{% url 'search_results' %}" method="get">
+    <input type="text" name="q" placeholder="検索キーワードを入力">
+    <button type="submit">検索</button>
+</form>
+{% endblock content %}
