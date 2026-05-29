@@ -1,85 +1,152 @@
 from django.contrib import admin
 from django import forms
+from django.utils.html import format_html
 from .models import Book, Stock, Location, Borrow, Reservation, HoldStock
 import requests
 from datetime import datetime
+from .services import fetch_book_by_isbn
 
 # Register your models here.
-#admin.site.register(Book)
-admin.site.register(Stock)
-admin.site.register(Location)
-admin.site.register(Borrow)
-admin.site.register(Reservation)
-admin.site.register(HoldStock)
+class StockInline(admin.TabularInline):
+    model = Stock
+    extra = 1
 
-class BookAdminForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = "__all__"
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        isbn = cleaned_data.get("isbn")
-
-        if not isbn:
-            return cleaned_data
-        
-        normalized_isbn = isbn.replace("-", "")
-
-        url = f"https://api.openbd.jp/v1/get?isbn={normalized_isbn}"
-        response = requests.get(url, timeout=5)
-        data = response.json()
-
-        if not data or data[0] is None:
-            return cleaned_data
-        
-        book_data = data[0]
-
-        summary = book_data.get("summary", {})
-        onix = book_data.get("onix", {})
-
-        # タイトル
-        if not cleaned_data.get("title"):
-            cleaned_data["title"] = summary.get("title", "")
-
-        # 著者
-        if not cleaned_data.get("author"):
-            cleaned_data["author"] = summary.get("author", "")
-
-        # 出版社
-        if not cleaned_data.get("publisher"):
-            cleaned_data["publisher"] = summary.get("publisher", "")
-
-        # 出版日
-        pubdate = summary.get("pubdate")
-        if pubdate and not cleaned_data.get("publication_date"):
-            try:
-                cleaned_data["publication_date"] = datetime.strptime(
-                    pubdate, "%Y%m%d"
-                ).date()
-            except ValueError:
-                pass
-        
-        # 表紙画像
-        if not cleaned_data.get("cover_image"):
-            cleaned_data["cover_image"] = summary.get("cover", "")
-        
-        # 説明
-        if not cleaned_data.get("description"):
-            try:
-                text_contens = (
-                    onix["CollateralDetail"]["TextContent"]
-                )
-                cleaned_data["description"] = text_contens[0].get(
-                    "Text", ""
-                )
-            except Exception:
-                pass
-
-        return cleaned_data
-    
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "author", "publisher", "isbn")
-    search_fields = ("title", "author", "isbn")
+    list_display = (
+        "cover_preview",
+        "title",
+        "author",
+        "publisher",
+        "isbn",
+        "stock_count",
+    )
+
+    search_fields = (
+        "title",
+        "author",
+        "isbn",
+    )
+
+    list_filter = (
+        "publisher",
+    )
+
+    inlines = [StockInline]
+
+    fields = (
+        "isbn",
+        "title",
+        "author",
+        "publisher",
+        "publication_date",
+        "description",
+        "cover_image",
+        "edition_number",
+    )
+
+    def save_model(self, request, obj, form, change):
+
+        # ISBNのみ入力された場合に自動取得
+        if obj.isbn and not obj.title:
+
+            data = fetch_book_by_isbn(obj.isbn)
+
+            if data:
+                obj.title = data["title"]
+                obj.author = data["author"]
+                obj.publisher = data["publisher"]
+                obj.publication_date = data["publication_date"]
+                obj.cover_image = data["cover_image"]
+
+        super().save_model(
+            request,
+            obj,
+            form,
+            change
+        )
+
+    @admin.display(description="表紙")
+    def cover_preview(self, obj):
+
+        if obj.cover_image:
+            return format_html(
+                '<img src="{}" width="50">',
+                obj.cover_image
+            )
+
+        return "-"
+
+    @admin.display(description="蔵書数")
+    def stock_count(self, obj):
+        return obj.stocks.count()
+
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "book",
+        "location",
+        "is_available",
+    )
+
+    list_filter = (
+        "is_available",
+        "location",
+    )
+
+    search_fields = (
+        "book__title",
+        "book__isbn",
+    )
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+
+
+@admin.register(Borrow)
+class BorrowAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "stock",
+        "borrowed_at",
+        "due_date",
+        "returned_at",
+    )
+
+    list_filter = (
+        "returned_at",
+    )
+
+    search_fields = (
+        "user__username",
+        "stock__book__title",
+    )
+
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "book",
+        "reserved_at",
+    )
+
+
+@admin.register(HoldStock)
+class HoldStockAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "stock",
+        "created_at",
+        "is_pickedup",
+    )
+
