@@ -1,12 +1,14 @@
 {% extends "libraryapp/base.html" %}
 
-{% block title %}貸出確認画面{% endblock %}
+{% block title %}受け取り確認画面{% endblock %}
 
 {% block content %}
-<h2>貸出確認</h2>
-<p>『{{ stock.book.title }}』</p>
+<h2>取り置き本の受取確認</h2>
 
-<form method="post">
+<p>『{{ hold.stock.book.title }}』</p>
+
+<form method="post"
+      action="{% url 'pickup_borrow' hold.id %}">
     {% csrf_token %}
 
     <label>返却予定日</label>
@@ -18,7 +20,9 @@
         max="{{ max_due_date|date:'Y-m-d' }}"
         required
     >
-    
-    <button type="submit">貸出する</button>
+
+    <button type="submit">
+        受け取る
+    </button>
 </form>
 {% endblock content %}

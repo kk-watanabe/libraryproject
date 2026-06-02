@@ -82,7 +82,7 @@ def fetch_google_books_cover(isbn):
         return ""
 
     data = response.json()
-    print(data)
+    #print(data)
     items = data.get("items")
 
     if not items:

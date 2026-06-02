@@ -52,10 +52,10 @@
             <li>
                 {{ hold.stock.book.title }} <span>【受取待ち】</span>
 
-                <form method="post" action="{% url 'pickup_borrow' hold.id %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">受け取る</button>
-                </form>
+                <a href="{% url 'pickup_confirm' hold.id %}"
+                    class="action-button">
+                    受け取る
+                </a>
             </li>
         {% endfor %}
     </ul>

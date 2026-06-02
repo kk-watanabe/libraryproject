@@ -15,9 +15,17 @@
 {% endif %}
 </p>
 
-<p>状態：{{ status_label }}</p>
+<p>
+    状態：
+    <span class="status-badge status-{{ book_status }}">
+        {{ status_label }}
+    </span>
+</p>
 {% if book_status == "available" %}
-    <a href="{% url 'borrow_confirm' stock.id %}">貸出する</a>
+    <a href="{% url 'borrow_confirm' stock.id %}"
+        class="action-button">
+        貸出する
+    </a>
 
 {% elif my_reserved %}
     <p>この本は予約済みです。</p>

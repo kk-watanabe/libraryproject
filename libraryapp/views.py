@@ -86,18 +86,28 @@ class BorrowConfirmView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
 
+        today = timezone.now().date()
+
         return render(
             request,
             self.template_name,
-            {"stock": stock}
+            {
+                "stock": stock,
+                "today": today,
+                "default_due_date": today + timedelta(days=14),
+                "max_due_date": today + timedelta(days=30),
+            }
         )
     
     def post(self, request, *args, **kwargs):
         stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
         
+        due_date = request.POST.get("due_date")
+
         Borrow.objects.create(
             stock=stock,
-            user=request.user
+            user=request.user,
+            due_date=due_date
         )
         
         stock.is_available = False
@@ -218,12 +228,40 @@ class PickupBorrowView(LoginRequiredMixin, View):
             is_pickedup=False
         )
         
+        due_date = request.POST.get("due_date")
+
         Borrow.objects.create(
             user=request.user,
-            stock=hold.stock
+            stock=hold.stock,
+            due_date=due_date,
         )
         
         hold.is_pickedup = True
         hold.delete()
         
         return redirect("mypage")
+
+
+class PickupConfirmView(LoginRequiredMixin, View):
+    template_name = "libraryapp/pickup_confirm.html"
+
+    def get(self, request, pk):
+        hold = get_object_or_404(
+            HoldStock,
+            pk=pk,
+            user=request.user,
+            is_pickedup=False
+        )
+
+        today = timezone.now().date()
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "hold": hold,
+                "today": today,
+                "default_due_date": today + timedelta(days=14),
+                "max_due_date": today + timedelta(days=30),
+            }
+        )

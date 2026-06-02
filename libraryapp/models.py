@@ -57,11 +57,6 @@ class Borrow(models.Model):
     borrowed_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.due_date:
-            self.due_date = timezone.now().date() + timedelta(days=14)
-        super().save(*args, **kwargs)
         
     def __str__(self):
         return f"{self.stock.book.title} - {self.user.username}"
