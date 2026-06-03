@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    background-color: #bbe2f1;
     color: #34495e;
     margin: 0;
 }
@@ -30,7 +30,7 @@ body {
 }
 
 .container {
-    background-color: #ffffff;
+    background-color: #f6f9fa;
     padding: 40px 30px;
     border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -40,19 +40,23 @@ body {
     margin: 50px auto;
 }
 
+.header-container {
+    background-color: #f8eaf9;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0px auto;
+}
+
 /* ===== 見出しのスタイル ===== */
 h1 {
-    /* テキストの色を青に設定 */
-    color: #0d0d0e;
-    /* テキストを中央揃え */
+    color: #4e4e52;
     text-align: center;
-    /* フォントサイズを設定 */
-    font-size: 2em;
-    /* 下に20pxの余白を設定 */
     margin-bottom: 20px;
-    /* フォントの太さを設定 */
-    font-weight: 300;
-    /* 文字間のスペースを設定 */
+    font-weight: 800;
     letter-spacing: 1px;
 }
 
@@ -83,7 +87,7 @@ form input[type="text"]{
 form button {
     white-space: nowrap; /* 改行防止 */
     /* ボタンの背景色を青に設定 */
-    background-color: #dce1e5;
+    background-color: #a6aeacdc;
     /* テキストの色を白に設定 */
     color: #080808;
     /* 内側の余白を設定 */
@@ -143,7 +147,7 @@ td:first-child {
 
 .action-button {
     display: inline-block;
-    background-color: #28a745;
+    background-color: #55bcc1;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
@@ -155,3 +159,26 @@ td:first-child {
     background-color: #218838;
 }
 
+.book-detail-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+}
+
+.book-info {
+    flex: 0 0 320px;
+}
+
+.review-section {
+    flex: 1;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.review-card {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}

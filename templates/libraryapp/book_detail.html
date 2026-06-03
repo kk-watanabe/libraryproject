@@ -5,37 +5,68 @@
 {% block content %}
 <h1>{{ book.title }}</h1>
 <hr>
-<p><strong>著者名：</strong>{{ book.author }}</p>
-<p><strong>出版日：</strong>{{ book.publication_date }}</p>
-<p>表紙画像：
-{% if book.cover_image %}
-    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
-{% else %}
-    未設定
-{% endif %}
-</p>
+<div class="book-detail-layout">
 
-<p>
-    状態：
-    <span class="status-badge status-{{ book_status }}">
-        {{ status_label }}
-    </span>
-</p>
-{% if book_status == "available" %}
-    <a href="{% url 'borrow_confirm' stock.id %}"
-        class="action-button">
-        貸出する
-    </a>
+    <div class="book-info">
+        <p><strong>著者名：</strong>{{ book.author }}</p>
+        <p><strong>出版日：</strong>{{ book.publication_date }}</p>
+        <p><strong>表紙画像</strong>：
+        {% if book.cover_image %}
+            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
+        {% else %}
+            未設定
+        {% endif %}
+        </p>
 
-{% elif my_reserved %}
-    <p>この本は予約済みです。</p>
-    
-{% else %}
-    <form method="post" action="{% url 'reserve_book' book.id %}">
-        {% csrf_token %}
-        <button type="submit">予約する</button>
-    </form>
-{% endif %}
+        <p><strong>
+            状態：
+            <span class="status-badge status-{{ book_status }}">
+                {{ status_label }}
+            </span>
+        </strong></p>
+        {% if book_status == "available" %}
+            <a href="{% url 'borrow_confirm' stock.id %}"
+                class="action-button">
+                貸出する
+            </a>
+
+        {% elif my_reserved %}
+            <p>この本は予約済みです。</p>
+            
+        {% else %}
+            <form method="post" action="{% url 'reserve_book' book.id %}">
+                {% csrf_token %}
+                <button type="submit">予約する</button>
+            </form>
+        {% endif %}
+
+    </div>
+
+    <div class="review-section">
+
+        <h3>感想・レビュー</h3>
+
+        {% for review in reviews %}
+            <div class="review-card">
+
+                <div class="review-rating">
+                    {{ review.get_rating_display }}
+                </div>
+
+                <p>{{ review.comment }}</p>
+
+                <small>
+                    {{ review.user.username }}
+                </small>
+
+            </div>
+        {% empty %}
+            <p>まだレビューはありません。</p>
+        {% endfor %}
+
+    </div>
+
+</div>
 
 <br><br>
 

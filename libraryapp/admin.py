@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.utils.html import format_html
-from .models import Book, Stock, Location, Borrow, Reservation, HoldStock
+from .models import Book, Stock, Location, Borrow, Reservation, HoldStock, Review
 import requests
 from datetime import datetime
 from .services import fetch_book_by_isbn
@@ -148,5 +148,15 @@ class HoldStockAdmin(admin.ModelAdmin):
         "stock",
         "created_at",
         "is_pickedup",
+    )
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = (
+        "book",
+        "user",
+        "rating",
+        "created_at"
     )
 

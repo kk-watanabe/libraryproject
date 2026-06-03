@@ -76,6 +76,9 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         context["book_status"] = status
         context["status_label"] = label
         context["my_reserved"] = my_reserved
+        context["reviews"] = self.object.reviews.select_related(
+            "user"
+        )
         
         return context
 

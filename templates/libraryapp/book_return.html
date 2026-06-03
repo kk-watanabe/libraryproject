@@ -3,7 +3,7 @@
 {% block title %}返却確認画面{% endblock %}
 
 {% block content %}
-<h2>{{ borrow.stock.book.title }}を返却しますか？</h2>
+<h2>『{{ borrow.stock.book.title }}』を返却しますか？</h2>
 <form method="post">
     {% csrf_token %}
     <button type="submit">返却する</button>

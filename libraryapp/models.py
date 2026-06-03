@@ -92,3 +92,42 @@ class HoldStock(models.Model):
     
     def __str__(self):
         return f"{self.user.username} hold {self.stock.book.title}"
+    
+
+class Review(models.Model):
+    RATING_CHOICES = [
+        (1, "★☆☆☆☆"),
+        (2, "★★☆☆☆"),
+        (3, "★★★☆☆"),
+        (4, "★★★★☆"),
+        (5, "★★★★★"),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    rating = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES
+    )
+
+    comment = models.TextField()
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        unique_together = ("user", "book")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.book.title} - {self.user.username}"
