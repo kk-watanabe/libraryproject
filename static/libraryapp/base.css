@@ -7,26 +7,26 @@ body {
 
 .header {
     display: flex;
-    justify-content: flex-end;
+    background-color: #6d6d6d;
+    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    padding: 0;
 }
 
 .header h1 {
-    width: 100%;
-    text-align: left;
-    margin: 20px;
+    color: #f5f4f5;
+    margin: 15px;
+    width: auto;
+    padding-left: 20px;
     font-size: 30px;
 }
 
 .header nav {
-    width: 100%;
+    color: #f4f3f0;
     display: flex;
-    justify-content: flex-end;
-    gap: 16px;
-    padding-right: 40px;
-    margin-top: 8px;
+    gap: 20px;
+    width: auto;
+    padding-right: 20px;
+    margin: 0;
 }
 
 .container {
@@ -227,4 +227,17 @@ td:first-child {
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
+}
+
+.logout-form {
+    display: inline;
+}
+
+.logout-form button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
 }

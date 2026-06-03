@@ -63,6 +63,12 @@
             </form>
         {% endif %}
 
+        <br><br>
+
+        <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
+            検索結果一覧へ戻る
+        </a>
+
     </div>
 
     <div class="review-section">
@@ -116,10 +122,4 @@
     </div>
 
 </div>
-
-<br><br>
-
-<a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
-    検索結果一覧へ戻る
-</a>
 {% endblock content %}
