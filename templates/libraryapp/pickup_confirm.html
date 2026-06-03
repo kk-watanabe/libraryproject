@@ -10,7 +10,7 @@
 <form method="post"
       action="{% url 'pickup_borrow' hold.id %}">
     {% csrf_token %}
-
+    <div class="date-row">
     <label>返却予定日</label>
     <input
         type="date"
@@ -20,7 +20,9 @@
         max="{{ max_due_date|date:'Y-m-d' }}"
         required
     >
-
+    </div>
+    <br>
+    
     <button type="submit">
         受け取る
     </button>

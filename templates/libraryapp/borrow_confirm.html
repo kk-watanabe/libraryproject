@@ -8,17 +8,20 @@
 
 <form method="post">
     {% csrf_token %}
-
-    <label>返却予定日</label>
-    <input
-        type="date"
-        name="due_date"
-        value="{{ default_due_date|date:'Y-m-d' }}"
-        min="{{ today|date:'Y-m-d' }}"
-        max="{{ max_due_date|date:'Y-m-d' }}"
-        required
-    >
+    <div class="date-row">
+        <label>返却予定日</label>
+        <input
+            type="date"
+            name="due_date"
+            value="{{ default_due_date|date:'Y-m-d' }}"
+            min="{{ today|date:'Y-m-d' }}"
+            max="{{ max_due_date|date:'Y-m-d' }}"
+            required
+        >
+    </div>
+    <br>
     
     <button type="submit">貸出確定</button>
+    
 </form>
 {% endblock content %}

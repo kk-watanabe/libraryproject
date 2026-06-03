@@ -25,6 +25,7 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 16px;
+    padding-right: 40px;
     margin-top: 8px;
 }
 
@@ -47,17 +48,15 @@ h1 {
     letter-spacing: 1px;
 }
 
-/* ===== フォームのスタイル ===== */
-form {
+.search-form {
     display: flex;
-    gap:3px;
+    gap: 3px;
 }
 
 /* テキストとパスワード入力フィールドのスタイル */
 form input[type="text"]{
-    flex: 1;
     /* 幅を100%に設定 */
-    width: 100%;
+    width: 500px;
     /* 内側の余白を設定 */
     padding: 10px;
     /* ボーダーを設定 */
@@ -134,7 +133,7 @@ td:first-child {
 
 .action-button {
     display: inline-block;
-    background-color: #55bcc1;
+    background-color: #218838;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
@@ -142,8 +141,19 @@ td:first-child {
     font-weight: bold;
 }
 
+.action-button2 {
+    display: inline-block;
+    background-color: #f7f6f3;
+    color: rgb(11, 11, 11);
+    border: 1px solid #333;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .action-button:hover {
-    background-color: #218838;
+    background-color: #55bcc1;
 }
 
 .book-detail-layout {
@@ -199,4 +209,22 @@ td:first-child {
     width: 120px;
     text-align: left;
     background-color: #f5f5f5;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.review-header h3 {
+    margin: 0;
+}
+
+.date-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }

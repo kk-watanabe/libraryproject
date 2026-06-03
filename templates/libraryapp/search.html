@@ -5,7 +5,7 @@
 {% block content %}
 <h2>蔵書検索</h2>
 <hr>
-<form action="{% url 'search_results' %}" method="get">
+<form class="search-form" action="{% url 'search_results' %}" method="get">
     <input type="text" name="q" placeholder="検索キーワードを入力">
     <button type="submit">検索</button>
 </form>

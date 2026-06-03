@@ -1,6 +1,6 @@
-from django.views.generic import TemplateView, ListView, DetailView, View
+from django.views.generic import TemplateView, ListView, DetailView, View, CreateView
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Stock, Borrow, Reservation, HoldStock
+from .models import Book, Stock, Borrow, Reservation, HoldStock, Review
 from django.db.models import Q
 from django.db import transaction
 from django.core.paginator import Paginator
@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from datetime import timedelta
+from .forms import ReviewForm
+from django.urls import reverse
 
 # Create your views here.
 class SearchView(LoginRequiredMixin, TemplateView):
@@ -270,4 +272,43 @@ class PickupConfirmView(LoginRequiredMixin, View):
                 "default_due_date": today + timedelta(days=14),
                 "max_due_date": today + timedelta(days=30),
             }
+        )
+        
+    
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = "libraryapp/review_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.book = get_object_or_404(
+            Book,
+            pk=self.kwargs["book_id"]
+        )
+
+        if Review.objects.filter(
+            user=request.user,
+            book=self.book
+        ).exists():
+            return redirect(
+                "book_detail",
+                pk=self.book.pk
+            )
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs
+        )
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.book = self.book
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse(
+            "book_detail",
+            kwargs={"pk": self.book.pk}
         )

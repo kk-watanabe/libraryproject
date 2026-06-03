@@ -12,4 +12,5 @@ urlpatterns = [
     path('reserve/<int:book_id>/', views.ReserveBookView.as_view(), name='reserve_book'),
     path('pickup/<int:pk>/', views.PickupBorrowView.as_view(), name='pickup_borrow'),
     path('pickup/confirm/<int:pk>/', views.PickupConfirmView.as_view(), name="pickup_confirm"),
+    path('book/<int:book_id>/review/', views.ReviewCreateView.as_view(), name="review_create"),
 ]

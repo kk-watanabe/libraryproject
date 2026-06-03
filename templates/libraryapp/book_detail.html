@@ -67,8 +67,17 @@
 
     <div class="review-section">
 
-        <h3>感想・レビュー</h3>
+        <div class="review-header">
+            <h3>感想・レビュー</h3>
 
+            {% if user.is_authenticated %}
+                <a href="{% url 'review_create' book.id %}"
+                class="action-button2">
+                    レビューを書く
+                </a>
+            {% endif %}
+        </div>
+        
         {% for review in reviews %}
             <div class="review-card">
 
