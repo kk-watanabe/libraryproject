@@ -42,7 +42,7 @@ class BookAdmin(admin.ModelAdmin):
         "publisher",
         "publication_date",
         "description",
-        "cover_image",
+        "cover_url",
         "edition_number",
     )
 
@@ -58,7 +58,7 @@ class BookAdmin(admin.ModelAdmin):
                 obj.author = data["author"]
                 obj.publisher = data["publisher"]
                 obj.publication_date = data["publication_date"]
-                obj.cover_image = data["cover_image"]
+                obj.cover_url = data["cover_url"]
 
         super().save_model(
             request,
@@ -70,10 +70,10 @@ class BookAdmin(admin.ModelAdmin):
     @admin.display(description="表紙")
     def cover_preview(self, obj):
 
-        if obj.cover_image:
+        if obj.cover_url:
             return format_html(
                 '<img src="{}" width="50">',
-                obj.cover_image
+                obj.cover_url
             )
 
         return "-"

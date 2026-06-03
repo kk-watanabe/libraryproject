@@ -16,7 +16,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=200, null=True, blank=True)
     publication_date = models.DateField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    cover_image = models.URLField(null=True, blank=True)
+    cover_url = models.URLField(null=True, blank=True)
     edition_number = models.IntegerField(default=1)
 
     def __str__(self):

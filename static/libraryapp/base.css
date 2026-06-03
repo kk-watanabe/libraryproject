@@ -73,7 +73,7 @@ form input[type="text"]{
 form button {
     white-space: nowrap; /* 改行防止 */
     /* ボタンの背景色を青に設定 */
-    background-color: #727072dc;
+    background-color: #717071dc;
     /* テキストの色を白に設定 */
     color: #faf8f8;
     /* 内側の余白を設定 */
@@ -153,7 +153,21 @@ td:first-child {
 }
 
 .action-button:hover {
-    background-color: #55bcc1;
+    opacity: 0.8;;
+}
+
+.reserve-button {
+    display: inline-block;
+    background-color: #ee71d3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.reserve-button:hover {
+    opacity: 0.8;
 }
 
 .book-detail-layout {

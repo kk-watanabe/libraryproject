@@ -54,17 +54,17 @@ def fetch_book_by_isbn(isbn):
     except Exception:
         publication_date = None
     
-    cover_image = summary.get("cover", "")
+    cover_url = summary.get("cover", "")
     
-    if not cover_image:
-        cover_image = fetch_google_books_cover(clean_isbn)
+    if not cover_url:
+        cover_url = fetch_google_books_cover(clean_isbn)
 
     return {
         "title": summary.get("title", ""),
         "author": summary.get("author", ""),
         "publisher": summary.get("publisher", ""),
         "publication_date": publication_date,
-        "cover_image": cover_image,
+        "cover_url": cover_url,
     }
 
 def fetch_google_books_cover(isbn):

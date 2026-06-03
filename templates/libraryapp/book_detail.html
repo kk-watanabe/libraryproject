@@ -9,6 +9,12 @@
     
     <div class="book-info">
         <h3>書籍情報</h3>
+        {% if book.cover_url %}
+            <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="book-cover" height="200">
+        {% else %}
+            カバー未設定
+        {% endif %}
+        <br><br>
         <table class="book-info-table">
             <tr>
                 <th><strong>タイトル</strong></th>
@@ -25,16 +31,6 @@
             <tr>
                 <th><strong>出版日</strong></th>
                 <td>{{ book.publication_date }}</td>
-            </tr>
-            <tr>
-                <th><strong>カバー画像</strong></th>
-                <td>
-                    {% if book.cover_image %}
-                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
-                    {% else %}
-                        未設定
-                    {% endif %}
-                </td>
             </tr>
             <tr>
                 <th><strong>貸出状況</strong></th>
@@ -59,7 +55,7 @@
         {% else %}
             <form method="post" action="{% url 'reserve_book' book.id %}">
                 {% csrf_token %}
-                <button type="submit">予約する</button>
+                <button type="submit" class="reserve-button">予約する</button>
             </form>
         {% endif %}
 

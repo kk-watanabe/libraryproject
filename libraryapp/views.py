@@ -20,7 +20,7 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "libraryapp/search_results.html"
     context_object_name = "book_list"
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -29,7 +29,8 @@ class SearchResultsView(LoginRequiredMixin, ListView):
         # 検索フィルタリング
         return queryset.filter(
                 Q(title__icontains=query) |
-                Q(author__icontains=query)
+                Q(author__icontains=query) |
+                Q(publisher__icontains=query)
         )
 
     # ページネーションの設定
