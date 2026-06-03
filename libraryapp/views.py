@@ -79,6 +79,9 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         context["reviews"] = self.object.reviews.select_related(
             "user"
         )
+        context["bookmeter_url"] = (
+            f"https://bookmeter.com/search?keyword={self.object.isbn}"
+        )
         
         return context
 

@@ -3,27 +3,50 @@
 {% block title %}詳細情報{% endblock %}
 
 {% block content %}
-<h1>{{ book.title }}</h1>
+<h2>{{ book.title }}</h2>
 <hr>
 <div class="book-detail-layout">
-
+    
     <div class="book-info">
-        <p><strong>著者名：</strong>{{ book.author }}</p>
-        <p><strong>出版日：</strong>{{ book.publication_date }}</p>
-        <p><strong>表紙画像</strong>：
-        {% if book.cover_image %}
-            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
-        {% else %}
-            未設定
-        {% endif %}
-        </p>
+        <h3>書籍情報</h3>
+        <table class="book-info-table">
+            <tr>
+                <th><strong>タイトル</strong></th>
+                <td>{{ book.title }}</td>
+            </tr>
+            <tr>
+                <th><strong>著者</strong></th>
+                <td>{{ book.author }}</td>
+            </tr>
+            <tr>
+                <th><strong>出版社</strong></th>
+                <td>{{ book.publisher }}</td>
+            </tr>
+            <tr>
+                <th><strong>出版日</strong></th>
+                <td>{{ book.publication_date }}</td>
+            </tr>
+            <tr>
+                <th><strong>カバー画像</strong></th>
+                <td>
+                    {% if book.cover_image %}
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover" height="200">
+                    {% else %}
+                        未設定
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th><strong>貸出状況</strong></th>
+                <td>
+                    <span class="status-badge status-{{ book_status }}">
+                        {{ status_label }}
+                    </span>
+                </td>
+            </tr>
+        </table>            
+        <br>
 
-        <p><strong>
-            状態：
-            <span class="status-badge status-{{ book_status }}">
-                {{ status_label }}
-            </span>
-        </strong></p>
         {% if book_status == "available" %}
             <a href="{% url 'borrow_confirm' stock.id %}"
                 class="action-button">
@@ -63,6 +86,23 @@
         {% empty %}
             <p>まだレビューはありません。</p>
         {% endfor %}
+
+        <hr>
+
+        <h3>外部レビュー</h3>
+
+        <p>
+            この本に関するレビューを外部サイトで確認できます。
+        </p>
+
+        <p>
+            <a href="{{ bookmeter_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="external-review-button">
+                📖 読書メーターでレビューを見る
+            </a>
+        </p>
 
     </div>
 
