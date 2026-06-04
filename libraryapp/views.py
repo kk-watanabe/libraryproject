@@ -223,9 +223,26 @@ class ReturnBookView(LoginRequiredMixin, View):
             
             reservation.delete()
 
-        return redirect("mypage")
+        return redirect(
+            'return_complete',
+            stock_id=stock.pk,
+        )
 
+
+class ReturnCompleteView(LoginRequiredMixin, TemplateView):
+    template_name = "libraryapp/return_complete.html"
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["stock"] = get_object_or_404(
+            Stock,
+            pk=self.kwargs["stock_id"]
+        )
+
+        return context
+
+
 class ReserveBookView(LoginRequiredMixin, View):
     def post(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)

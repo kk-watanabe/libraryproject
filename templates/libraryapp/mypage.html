@@ -13,11 +13,10 @@
         {% for borrow in borrows %}
             <li>
                 {{ borrow.stock.book.title }}／{{ borrow.stock.book.author }}
-                （返却期限: {{ borrow.due_date }}）
-
                 <a href="{% url 'return_book' borrow.id %}">
                     返却する
                 </a>
+                <p>　返却期限: {{ borrow.due_date }}　保存場所: {{ borrow.stock.location }}</p>
             </li>
         {% endfor %}
     </ul>
