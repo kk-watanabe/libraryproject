@@ -113,7 +113,7 @@ class BorrowConfirmView(LoginRequiredMixin, View):
         
         due_date = request.POST.get("due_date")
 
-        Borrow.objects.create(
+        borrow = Borrow.objects.create(
             stock=stock,
             user=request.user,
             due_date=due_date
@@ -122,7 +122,11 @@ class BorrowConfirmView(LoginRequiredMixin, View):
         stock.is_available = False
         stock.save()
         
-        return redirect('borrow_complete', stock_id=stock.pk)
+        return redirect(
+            'borrow_complete',
+            stock_id=stock.pk,
+            borrow_id=borrow.pk,
+        )
 
 
 class BorrowCompleteView(LoginRequiredMixin, TemplateView):
@@ -134,6 +138,12 @@ class BorrowCompleteView(LoginRequiredMixin, TemplateView):
             Stock,
             pk=self.kwargs["stock_id"]
         )
+
+        context["borrow"] = get_object_or_404(
+            Borrow,
+            pk=self.kwargs["borrow_id"]
+        )
+
         return context
 
 

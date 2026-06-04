@@ -12,7 +12,7 @@
     <ul>
         {% for borrow in borrows %}
             <li>
-                {{ borrow.stock.book.title }}
+                {{ borrow.stock.book.title }}／{{ borrow.stock.book.author }}
                 （返却期限: {{ borrow.due_date }}）
 
                 <a href="{% url 'return_book' borrow.id %}">
@@ -33,7 +33,7 @@
     <ul>
         {% for reservation in reservations %}
             <li>
-                {{ reservation.book.title }}
+                {{ reservation.book.title }}／{{ reservation.book.author }}
                 （予約日：{{ reservation.reserved_at|date:"Y-m-d H:i" }}）
             </li>
         {% endfor %}
@@ -50,7 +50,7 @@
     <ul>
         {% for hold in hold_stocks %}
             <li>
-                {{ hold.stock.book.title }} <span>【受取待ち】</span>
+                {{ hold.stock.book.title }}／{{ hold.stock.book.author }} <span>【受取待ち】</span>
 
                 <a href="{% url 'pickup_confirm' hold.id %}"
                     class="action-button">

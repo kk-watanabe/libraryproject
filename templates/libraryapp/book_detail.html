@@ -43,21 +43,23 @@
         </table>            
         <br>
 
-        {% if book_status == "available" %}
-            <a href="{% url 'borrow_confirm' stock.id %}"
-                class="action-button">
-                貸出する
-            </a>
+        <div class="book-action">
+            {% if book_status == "available" %}
+                <a href="{% url 'borrow_confirm' stock.id %}"
+                    class="action-button">
+                    貸出する
+                </a>
 
-        {% elif my_reserved %}
-            <p>この本は予約済みです。</p>
-            
-        {% else %}
-            <form method="post" action="{% url 'reserve_book' book.id %}">
-                {% csrf_token %}
-                <button type="submit" class="reserve-button">予約する</button>
-            </form>
-        {% endif %}
+            {% elif my_reserved %}
+                <p>この本は予約済みです。</p>
+                
+            {% else %}
+                <form method="post" action="{% url 'reserve_book' book.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="reserve-button">予約する</button>
+                </form>
+            {% endif %}
+        </div>
 
         <br><br>
 

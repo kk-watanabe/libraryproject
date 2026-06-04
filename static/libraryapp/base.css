@@ -21,7 +21,7 @@ body {
 }
 
 .header nav {
-    color: #f4f3f0;
+    color: #f5f4f5;
     display: flex;
     gap: 20px;
     width: auto;
@@ -29,6 +29,10 @@ body {
     margin: 0;
 }
 
+.header nav a {
+    color: #f5f4f5;
+    text-decoration: none;
+}
 .container {
     background-color: #f6f9fa;
     padding: 40px 30px;
@@ -172,7 +176,7 @@ td:first-child {
 
 .book-detail-layout {
     display: flex;
-    gap: 32px;
+    gap: 48px;
     align-items: flex-start;
 }
 
@@ -197,7 +201,7 @@ td:first-child {
 .external-review-button {
     display: inline-block;
     padding: 10px 16px;
-    background-color: #4caf50;
+    background-color: #218838;
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -254,4 +258,9 @@ td:first-child {
     color: inherit;
     font: inherit;
     cursor: pointer;
+}
+
+.book-action {
+    margin-top: 16px;
+    text-align: right;
 }
