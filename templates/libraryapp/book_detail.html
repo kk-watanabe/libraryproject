@@ -15,7 +15,7 @@
             <img src="{{ book.cover_url }}"
                  alt="{{ book.title }}"
                  class="book-cover"
-                 height="200">
+                 height="230">
         {% else %}
             カバー未設定
         {% endif %}
@@ -25,28 +25,28 @@
 
         <table class="book-info-table">
             <tr>
-                <th>タイトル</th>
+                <th><strong>タイトル</strong></th>
                 <td>{{ book.title }}</td>
+            </tr> 
+            <tr> 
+                <th><strong>著者</strong></th>
+                <td>{{ book.author }}</td> 
+            </tr> 
+            <tr> 
+                <th><strong>出版社</strong></th> 
+                <td>{{ book.publisher }}</td> 
+            </tr> 
+            <tr> 
+                <th><strong>出版日</strong></th> 
+                <td>{{ book.publication_date }}</td> 
             </tr>
             <tr>
-                <th>著者</th>
-                <td>{{ book.author }}</td>
+                <th>ISBN</th>
+                <td>{{ book.isbn }}</td>
             </tr>
-            <tr>
-                <th>出版社</th>
-                <td>{{ book.publisher }}</td>
-            </tr>
-            <tr>
-                <th>出版日</th>
-                <td>{{ book.publication_date }}</td>
-            </tr>
-            <tr>
-                <th>貸出状況</th>
-                <td>
-                    <span class="status-badge status-{{ book_status }}">
-                        {{ status_label }}
-                    </span>
-                </td>
+            <tr> 
+                <th><strong>貸出状況</strong></th> 
+                <td><span class="status-badge status-{{ book_status }}">{{ status_label }}</span></td> 
             </tr>
         </table>
 
@@ -98,7 +98,7 @@
         📖 読書メーターでレビューを見る
     </a>
 </p>
-
+<br>
 <hr>
 
 <div class="review-header">
@@ -129,7 +129,7 @@
 {% empty %}
     <p>まだレビューはありません。</p>
 {% endfor %}
-
+<br>
 <p>
     <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">
         検索結果一覧へ戻る
