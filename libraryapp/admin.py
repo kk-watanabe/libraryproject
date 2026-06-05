@@ -14,6 +14,12 @@ class StockInline(admin.TabularInline):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
+
+    class Media:
+        js = (
+            "libraryapp/js/barcode_scanner.js",
+        )
+        
     list_display = (
         "cover_preview",
         "title",

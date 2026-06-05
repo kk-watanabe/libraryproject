@@ -81,26 +81,9 @@
         検索結果一覧へ戻る
     </a>
 </p>
-
-<hr>
-
-<h3>外部レビュー</h3>
-
-<p>
-    この本に関するレビューを外部サイトで確認できます。
-</p>
-
-<p>
-    <a href="{{ bookmeter_url }}"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="external-review-button">
-        📖 読書メーターでレビューを見る
-    </a>
-</p>
 <br>
-<hr>
 
+<hr>
 <div class="review-header">
     <h3>感想・レビュー</h3>
 
@@ -129,6 +112,22 @@
 {% empty %}
     <p>まだレビューはありません。</p>
 {% endfor %}
+<br>
+<hr>
+<h3>外部レビュー</h3>
+
+<p>
+    この本に関するレビューを外部サイトで確認できます。
+</p>
+
+<p>
+    <a href="{{ bookmeter_url }}"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="external-review-button">
+        📖 読書メーターでレビューを見る
+    </a>
+</p>
 <br>
 <p>
     <a href="{% url 'search_results' %}?{{ request.GET.urlencode }}">

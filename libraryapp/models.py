@@ -127,7 +127,7 @@ class Review(models.Model):
 
     class Meta:
         unique_together = ("user", "book")
-        ordering = ["created_at"]
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.book.title} - {self.user.username}"

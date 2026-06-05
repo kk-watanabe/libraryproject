@@ -9,19 +9,22 @@
 <!-- 貸出中 -->
 <h2>貸出中の本</h2>
 {% if borrows %}
-    <ul>
+    <ul class="borrow-list">
         {% for borrow in borrows %}
             <li>
                 {{ borrow.stock.book.title }}／{{ borrow.stock.book.author }}
                 <a href="{% url 'return_book' borrow.id %}">
                     返却する
                 </a>
-                <p>　返却期限: {{ borrow.due_date }}　保存場所: {{ borrow.stock.location }}</p>
+                <p>
+                    　返却期限: {{ borrow.due_date }}
+                    　保存場所: {{ borrow.stock.location }}
+                </p>
             </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>貸出中の本はありません。</p>
+    <p>　貸出中の本はありません。</p>
 {% endif %}
 
 <br>
@@ -38,7 +41,7 @@
         {% endfor %}
     </ul>
 {% else %}
-    <p>予約中の本はありません。</p>
+    <p>　予約中の本はありません。</p>
 {% endif %}
 
 <br>
@@ -59,7 +62,7 @@
         {% endfor %}
     </ul>
 {% else %}
-    <p>受取可能な本はありません。</p>
+    <p>　受取可能な本はありません。</p>
 {% endif %}
 
 <br>
