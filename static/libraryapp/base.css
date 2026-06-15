@@ -156,6 +156,16 @@ td:first-child {
     font-size: 14px;
 }
 
+.action-button3 {
+    display: inline-block;
+    background-color: #365fc8;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .action-button:hover {
     opacity: 0.8;;
 }
