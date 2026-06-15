@@ -50,7 +50,7 @@ body {
 }
 
 /* ===== 見出しのスタイル ===== */
-h1 {
+.h2 {
     color: #4e4e52;
     text-align: center;
     margin-bottom: 20px;

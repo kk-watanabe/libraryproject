@@ -3,11 +3,11 @@
 {% block title %}マイページ{% endblock %}
 
 {% block content %}
-<h1>マイページ（{{ user.username }}さん）</h1>
+<h2 class="h2">マイページ（{{ user.username }}さん）</h2>
 <hr>
 
 <!-- 貸出中 -->
-<h2>貸出中の本</h2>
+<h3>貸出中の本</h3>
 <table border="1">
     <tr>
         <th>返却期限</th>
@@ -40,8 +40,8 @@
 
 <br>
 
-<!-- 予約中 -->
-<h2>予約中の本</h2>
+<hr>
+<h3>予約中の本</h3>
 <table border="1">
     <tr>
         <th>タイトル／著者</th>
@@ -67,8 +67,8 @@
 
 <br>
 
-<!-- 取り置き中 -->
-<h2>受取可能な本（取り置き中）</h2>
+<hr>
+<h3>取り置き中の本</h3>
 <table border="1">
     <tr>
         <th>タイトル／著者</th>
@@ -97,5 +97,6 @@
 
 
 <br>
+<hr>
 <a href="{% url 'home' %}">TOPページに戻る</a>
 {% endblock content %}
