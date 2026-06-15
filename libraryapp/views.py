@@ -20,7 +20,7 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "libraryapp/search_results.html"
     context_object_name = "book_list"
-    paginate_by = 10
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()

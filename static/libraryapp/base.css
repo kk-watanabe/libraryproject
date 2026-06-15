@@ -176,8 +176,8 @@ td:first-child {
 
 .book-summary {
     display: flex;
-    width: 100%;
-    gap: 30px;
+    width: 80%;
+    gap: 50px;
     align-items: flex-start;
     margin-bottom: 20px;
 }
@@ -266,12 +266,4 @@ td:first-child {
     color: inherit;
     font: inherit;
     cursor: pointer;
-}
-
-.borrow-list li {
-    margin-bottom: 20px;
-}
-
-.borrow-list p {
-    margin: 5px 0 0 0;
 }

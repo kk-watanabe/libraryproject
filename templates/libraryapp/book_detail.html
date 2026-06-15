@@ -48,29 +48,39 @@
                 <th><strong>貸出状況</strong></th> 
                 <td><span class="status-badge status-{{ book_status }}">{{ status_label }}</span></td> 
             </tr>
+            <tr>
+                <th><strong>
+                    {% if book_status == "available" %}
+                        貸出
+                    {% else %}
+                        予約
+                    {% endif %}
+                </strong></th>
+                <td>
+                    <div class="book-action">
+                        {% if book_status == "available" %}
+                            <a href="{% url 'borrow_confirm' stock.id %}"
+                            class="action-button">
+                                貸出する
+                            </a>
+
+                        {% elif my_reserved %}
+                            <p>この本は予約済みです。</p>
+
+                        {% else %}
+                            <form method="post"
+                                action="{% url 'reserve_book' book.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="reserve-button">
+                                    予約する
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
         </table>
-
-        <div class="book-action">
-            {% if book_status == "available" %}
-                <a href="{% url 'borrow_confirm' stock.id %}"
-                   class="action-button">
-                    貸出する
-                </a>
-
-            {% elif my_reserved %}
-                <p>この本は予約済みです。</p>
-
-            {% else %}
-                <form method="post"
-                      action="{% url 'reserve_book' book.id %}">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="reserve-button">
-                        予約する
-                    </button>
-                </form>
-            {% endif %}
-        </div>
 
     </div>
 
