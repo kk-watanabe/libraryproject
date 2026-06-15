@@ -20,7 +20,7 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "libraryapp/search_results.html"
     context_object_name = "book_list"
-    paginate_by = 20
+    paginate_by = 30
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -56,6 +56,10 @@ class BookDetailView(LoginRequiredMixin, DetailView):
             is_available=True
         )
         
+        borrowed_stocks = self.object.stocks.filter(
+            is_available=False
+        )
+        
         stock = available_stocks.first()
         stock_count = available_stocks.count()
         reservation_count = self.object.reservations.count()
@@ -71,14 +75,32 @@ class BookDetailView(LoginRequiredMixin, DetailView):
             status = "available"
             label = "貸出可能"
 
+        my_borrowed = False
+        for stock in borrowed_stocks:
+            my_borrowed = stock.borrows.filter(
+                user=self.request.user,
+                returned_at__isnull=True,
+            ).exists()
+            if my_borrowed:break
+        
         my_reserved = self.object.reservations.filter(
             user=self.request.user
         ).exists()
         
+        my_hold = False
+        for stock in borrowed_stocks:
+            my_hold = stock.hold.filter(
+                user=self.request.user,
+                is_pickedup=False,
+            ).exists()
+            if my_hold:break
+        
         context["stock"] = stock
         context["book_status"] = status
         context["status_label"] = label
+        context["my_borrowed"] = my_borrowed
         context["my_reserved"] = my_reserved
+        context["my_hold"] = my_hold
         context["reviews"] = self.object.reviews.select_related(
             "user"
         )

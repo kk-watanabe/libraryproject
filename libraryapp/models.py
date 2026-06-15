@@ -86,7 +86,11 @@ class HoldStock(models.Model):
     返却後、予約者への取り置き
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(
+        Stock,
+        on_delete=models.CASCADE,
+        related_name="hold"
+    )
     created_at = models.DateTimeField(default=timezone.now)
     is_pickedup = models.BooleanField(default=False) # 受取済みか
     

@@ -20,6 +20,11 @@ body {
     font-size: 30px;
 }
 
+.header h1 a {
+    color: #f5f4f5;
+    text-decoration: none;
+}
+
 .header nav {
     color: #f5f4f5;
     display: flex;
@@ -33,6 +38,7 @@ body {
     color: #f5f4f5;
     text-decoration: none;
 }
+
 .container {
     background-color: #f6f9fa;
     padding: 40px 30px;
