@@ -19,6 +19,10 @@ class Book(models.Model):
     cover_url = models.URLField(null=True, blank=True)
     edition_number = models.IntegerField(default=1)
 
+    @property
+    def stock_count(self):
+        return self.stocks.count()
+    
     def __str__(self):
         return self.title
 

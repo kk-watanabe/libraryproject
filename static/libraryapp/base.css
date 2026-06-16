@@ -297,3 +297,37 @@ td:first-child {
     width: 100px;
     white-space: nowrap;
 }
+
+.title {
+    width: 60%;
+}
+
+.publisher {
+    width: 110px;
+    white-space: nowrap;
+}
+
+.date {
+    width: 110px;
+    white-space: nowrap;
+}
+
+.stock_count {
+    width: 40px;
+    white-space: nowrap;
+}
+
+.stock_count_td {
+    text-align: right;
+}
+
+.my-borrowed-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.my-borrowed-header h3 {
+    margin: 0;
+}

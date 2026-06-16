@@ -57,13 +57,12 @@
                             class="action-button">
                                 貸出する
                             </a>
-                        {% elif book_status == "borrowed" and my_borrowed %}
+                        {% elif book_status != "available" and my_borrowed %}
                             <p>現在、この本を借りています。</p>
                         {% elif my_hold %}
                             <p>マイページから取り置き本を受け取ってください。</p>
                         {% elif my_reserved %}
                             <p>この本は予約済みです。</p>
-
                         {% else %}
                             <form method="post"
                                 action="{% url 'reserve_book' book.id %}">

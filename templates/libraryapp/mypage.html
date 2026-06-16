@@ -7,19 +7,21 @@
 <hr>
 
 <!-- 貸出中 -->
+ <div class="my-borrowed-header">
 <h3>貸出中の本</h3>
 
-<p>
-    <a href="{% url 'borrow_history' %}">
-        貸出履歴を見る
-    </a>
-</p>
+<a href="{% url 'borrow_history' %}"
+    class="action-button2">
+    貸出履歴を見る
+</a>
+</div>
+
 <table border="1">
     <tr>
-        <th>返却期限</th>
-        <th>タイトル／著者</th>
-        <th>保存場所</th>
-        <th>返却</th>
+        <th class="date">返却期限</th>
+        <th class="title">タイトル／著者</th>
+        <th class="location">保存場所</th>
+        <th class="date">返却</th>
     </tr>
     {% for borrow in borrows %}
     <tr>

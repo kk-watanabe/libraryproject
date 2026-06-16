@@ -109,7 +109,7 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         )
         
         return context
-
+    
 
 class BorrowConfirmView(LoginRequiredMixin, View):
     template_name = "libraryapp/borrow_confirm.html"

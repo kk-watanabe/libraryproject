@@ -12,23 +12,21 @@
 <hr>
 <table border="1">
     <tr>
-        <th>タイトル</th>
-        <th>著者</th>
-        <th>出版社</th>
-        <th>出版日</th>
-        <th>版数</th>
+        <th class="title">タイトル／著者</th>
+        <th class="publisher">出版社</th>
+        <th class="date">出版日</th>
+        <th class="stock_count">蔵書数</th>
     </tr>
     {% for book in book_list %}
     <tr>
         <td>
             <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
-                {{ book.title }}
+                {{ book.title }}／{{ book.author }}
             </a>
         </td>
-        <td>{{ book.author }}</td>
         <td>{{ book.publisher }}</td>
         <td>{{ book.publication_date }}</td>
-        <td>{{ book.edition_number }}</td>
+        <td class="stock_count_td">{{ book.stock_count }}</td>
     </tr>
     {% empty %}
     <tr>
