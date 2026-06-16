@@ -8,6 +8,7 @@ urlpatterns = [
     path('borrow/<int:stock_id>/', views.BorrowConfirmView.as_view(), name='borrow_confirm'),
     path('borrow/<int:stock_id>/complete/<int:borrow_id>/', views.BorrowCompleteView.as_view(), name="borrow_complete"),
     path('mypage/', views.MyPageView.as_view(), name='mypage'),
+    path("history/", views.BorrowHistoryView.as_view(), name="borrow_history"),
     path('return/<int:borrow_id>/', views.ReturnBookView.as_view(), name='return_book'),
     path('return/<int:stock_id>/complete/', views.ReturnCompleteView.as_view(), name='return_complete'),
     path('reserve/<int:book_id>/', views.ReserveBookView.as_view(), name='reserve_book'),

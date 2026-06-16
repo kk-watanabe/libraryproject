@@ -283,3 +283,17 @@ td:first-child {
     font: inherit;
     cursor: pointer;
 }
+
+.history-title {
+    width: 60%;
+}
+
+.history-date {
+    width: 110px;
+    white-space: nowrap;
+}
+
+.history-location {
+    width: 100px;
+    white-space: nowrap;
+}

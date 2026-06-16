@@ -1,0 +1,55 @@
+{% extends "libraryapp/base.html" %}
+
+{% block title %}貸出返却履歴{% endblock %}
+
+{% block content %}
+<h2>貸出返却履歴</h2>
+
+<hr>
+
+<table>
+    <tr>
+        <th class="history-title">タイトル／著者</th>
+        <th class="history-date">貸出日</th>
+        <th class="history-date">返却日</th>
+        <th class="history-location">保存場所</th>
+    </tr>
+
+    {% for history in histories %}
+    <tr>
+        <td>
+            <a href="{% url 'book_detail' history.stock.book.id %}">
+                {{ history.stock.book.title }}
+                ／
+                {{ history.stock.book.author }}
+            </a>
+        </td>
+
+        <td>
+            {{ history.borrowed_at|date:"Y-m-d" }}
+        </td>
+
+        <td>
+            {{ history.returned_at|date:"Y-m-d" }}
+        </td>
+        <td>
+            {{ history.stock.location }}
+        </td>
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="3">
+            貸出履歴はありません。
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="{% url 'mypage' %}">
+    マイページへ戻る
+</a>
+
+{% endblock %}

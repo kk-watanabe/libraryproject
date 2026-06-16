@@ -49,13 +49,7 @@
                 <td><span class="status-badge status-{{ book_status }}">{{ status_label }}</span></td> 
             </tr>
             <tr>
-                <th><strong>
-                    {% if book_status == "available" %}
-                        貸出
-                    {% else %}
-                        予約
-                    {% endif %}
-                </strong></th>
+                <th><strong>貸出</strong></th>
                 <td>
                     <div class="book-action">
                         {% if book_status == "available" %}
@@ -66,7 +60,7 @@
                         {% elif book_status == "borrowed" and my_borrowed %}
                             <p>現在、この本を借りています。</p>
                         {% elif my_hold %}
-                            <p>取り置き本を受け取ってください。</p>
+                            <p>マイページから取り置き本を受け取ってください。</p>
                         {% elif my_reserved %}
                             <p>この本は予約済みです。</p>
 

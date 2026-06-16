@@ -362,3 +362,19 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
             "book_detail",
             kwargs={"pk": self.book.pk}
         )
+
+
+class BorrowHistoryView(LoginRequiredMixin, ListView):
+    model = Borrow
+    template_name = "libraryapp/borrow_history.html"
+    context_object_name = "histories"
+
+    def get_queryset(self):
+        return (
+            Borrow.objects.filter(
+                user=self.request.user,
+                returned_at__isnull=False
+            )
+            .select_related("stock__book")
+            .order_by("-returned_at")
+        )
