@@ -57,10 +57,11 @@
                             class="action-button">
                                 貸出する
                             </a>
+                            {% if my_borrowed %}　現在、既にこの本を借りています。{% endif %}
                         {% elif book_status != "available" and my_borrowed %}
                             <p>現在、この本を借りています。</p>
                         {% elif my_hold %}
-                            <p>マイページから取り置き本を受け取ってください。</p>
+                            <p>マイページで取り置き本の受取処理を行ってください。</p>
                         {% elif my_reserved %}
                             <p>この本は予約済みです。</p>
                         {% else %}

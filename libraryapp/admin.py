@@ -17,6 +17,7 @@ class BookAdmin(admin.ModelAdmin):
 
     class Media:
         js = (
+            "https://unpkg.com/html5-qrcode",
             "libraryapp/js/barcode_scanner.js",
         )
         
