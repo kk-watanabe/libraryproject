@@ -7,15 +7,11 @@
 <hr>
 
 <!-- 貸出中 -->
- <div class="my-borrowed-header">
+<!--<div class="my-borrowed-header">-->
 <h3>貸出中の本</h3>
 
-<a href="{% url 'borrow_history' %}"
-    class="action-button2">
-    貸出履歴を見る
-</a>
-</div>
 
+<!--</div>-->
 <table border="1">
     <tr>
         <th class="date">返却期限</th>
@@ -45,15 +41,22 @@
     </tr>
     {% endfor %}
 </table>
+<div class="my-history">
+<a href="{% url 'borrow_history' %}"
+    class="action-button2">
+    過去の履歴を見る
+</a>
+</div>
 
 <br>
 
 <hr>
+
 <h3>予約中の本</h3>
 <table border="1">
     <tr>
-        <th>タイトル／著者</th>
-        <th>予約日</th>
+        <th class="title">タイトル／著者</th>
+        <th class="date">予約日</th>
     </tr>
     {% for reservation in reservations %}
     <tr>
@@ -76,11 +79,12 @@
 <br>
 
 <hr>
+
 <h3>取り置き中の本</h3>
 <table border="1">
     <tr>
-        <th>タイトル／著者</th>
-        <th>受取</th>
+        <th class="title">タイトル／著者</th>
+        <th class="date">受取</th>
     </tr>
     {% for hold in hold_stocks %}
     <tr>
@@ -102,7 +106,6 @@
     </tr>
     {% endfor %}
 </table>
-
 
 <br>
 <hr>

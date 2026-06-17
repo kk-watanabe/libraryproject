@@ -15,4 +15,5 @@ urlpatterns = [
     path('pickup/<int:pk>/', views.PickupBorrowView.as_view(), name='pickup_borrow'),
     path('pickup/confirm/<int:pk>/', views.PickupConfirmView.as_view(), name="pickup_confirm"),
     path('book/<int:book_id>/review/', views.ReviewCreateView.as_view(), name="review_create"),
+    path("api/book-info/", views.book_info_api, name="book_info_api"),
 ]

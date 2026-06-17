@@ -49,6 +49,14 @@ body {
     margin: 40px auto;
 }
 
+.container2 {
+    background-color: #f6f9fa;
+    padding: 0px 50px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
 /* ===== 見出しのスタイル ===== */
 .h2 {
     color: #4e4e52;
@@ -104,11 +112,19 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+th {
+    width: 100px;
+    text-align: left;
+    padding: 10px;
+    background-color: #ece9e7;
+    border: 1px solid #bcbbbb;
+}
+
+td {
     text-align: left;
     vertical-align: middle;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #bcbbbb;
 }
 
 th:first-child,
@@ -193,7 +209,7 @@ td:first-child {
 .book-summary {
     display: flex;
     width: 80%;
-    gap: 50px;
+    gap: 40px;
     align-items: flex-start;
     margin-bottom: 20px;
 }
@@ -243,13 +259,14 @@ td:first-child {
 }
 
 .book-info-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #cdcccc;
     padding: 8px;
 }
 
 .book-info-table th {
     width: 100px;
     text-align: left;
+    border: 1px solid #cdcccc;
     background-color: #f5f5f5;
 }
 
@@ -299,7 +316,7 @@ td:first-child {
 }
 
 .title {
-    width: 60%;
+    width: 480px;
 }
 
 .publisher {
@@ -330,4 +347,18 @@ td:first-child {
 
 .my-borrowed-header h3 {
     margin: 10px;
+}
+
+.my-history {
+    align-items: center;
+    margin-top: 16px;
+}
+
+.number {
+    background-color: #a6a5a5;
+    width: 40px;
+}
+
+.number-header {
+    width: 40px;
 }

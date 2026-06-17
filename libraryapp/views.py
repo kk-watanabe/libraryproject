@@ -10,6 +10,8 @@ from django.utils import timezone
 from datetime import timedelta
 from .forms import ReviewForm
 from django.urls import reverse
+from django.http import JsonResponse
+from .services import fetch_book_by_isbn
 
 # Create your views here.
 class SearchView(LoginRequiredMixin, TemplateView):
@@ -378,3 +380,24 @@ class BorrowHistoryView(LoginRequiredMixin, ListView):
             .select_related("stock__book")
             .order_by("-returned_at")
         )
+
+
+def book_info_api(request):
+
+    isbn = request.GET.get("isbn")
+
+    if not isbn:
+        return JsonResponse(
+            {"error": "ISBNが指定されていません"},
+            status=400
+        )
+
+    data = fetch_book_by_isbn(isbn)
+
+    if not data:
+        return JsonResponse(
+            {"error": "書籍情報が見つかりません"},
+            status=404
+        )
+
+    return JsonResponse(data)

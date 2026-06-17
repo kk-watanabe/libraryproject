@@ -12,6 +12,7 @@
 <hr>
 <table border="1">
     <tr>
+        <th class="number-header">No.</th>
         <th class="title">タイトル／著者</th>
         <th class="publisher">出版社</th>
         <th class="date">出版日</th>
@@ -19,6 +20,9 @@
     </tr>
     {% for book in book_list %}
     <tr>
+        <td class="number">
+            {{ forloop.counter }}
+        </td>
         <td>
             <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
                 {{ book.title }}／{{ book.author }}
