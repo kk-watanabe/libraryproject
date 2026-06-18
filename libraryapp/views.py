@@ -185,10 +185,17 @@ class MyPageView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        context['reservations'] = Reservation.objects.filter(
+        reservations = Reservation.objects.filter(
             user=self.request.user
         ).select_related("book")
         
+        for reservation in reservations:
+            reservation.waiting_count = Reservation.objects.filter(
+                book=reservation.book,
+                reserved_at__lt=reservation.reserved_at
+            ).count()
+        
+        context['reservations'] = reservations
         context['hold_stocks'] = HoldStock.objects.filter(
             user=self.request.user,
             is_pickedup=False

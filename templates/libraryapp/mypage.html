@@ -63,7 +63,8 @@
         <th class="number-header">No.</th>
         <th class="title">タイトル</th>
         <th class="author">著者</th>
-        <th class="button">予約日</th>
+        <th class="date">予約日</th>
+        <th class="date">待ち人数</th>
     </tr>
     {% for reservation in reservations %}
     <tr>
@@ -79,10 +80,13 @@
         <td>
             {{ reservation.reserved_at|date:"Y-m-d" }}
         </td>
+        <td>
+            あと{{ reservation.waiting_count }}人
+        </td>
     </tr>
     {% empty %}
     <tr>
-        <td colspan="4">予約中の本はありません。</td>
+        <td colspan="5">予約中の本はありません。</td>
     </tr>
     {% endfor %}
 </table>
@@ -97,6 +101,7 @@
         <th class="number-header">No.</th>
         <th class="title">タイトル</th>
         <th class="author">著者</th>
+        <th class="date">受取開始日</th>
         <th class="button">受取</th>
     </tr>
     {% for hold in hold_stocks %}
@@ -110,6 +115,7 @@
             </a>
         </td>
         <td>{{ hold.stock.book.author }}</td>
+        <td>{{ hold.created_at|date:"Y-m-d" }}</td>
         <td class="position-center">
             <a href="{% url 'pickup_confirm' hold.id %}"
                 class="action-button">
@@ -119,7 +125,7 @@
     </tr>
     {% empty %}
     <tr>
-        <td colspan="4">受け取り可能な本はありません。</td>
+        <td colspan="5">受け取り可能な本はありません。</td>
     </tr>
     {% endfor %}
 </table>

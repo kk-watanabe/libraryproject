@@ -339,7 +339,7 @@ td:first-child {
 }
 
 .button {
-    width: 120px;
+    width: 100px;
     white-space: nowrap;
 }
 
@@ -366,7 +366,6 @@ td:first-child {
 
 .number {
     background-color: #a6a5a5;
-    width: 40px;
 }
 
 .position-center {
