@@ -8,27 +8,38 @@
 
 <!-- 貸出中 -->
 <!--<div class="my-borrowed-header">-->
+<div class="my-borrowed-header">
 <h3>貸出中の本</h3>
-
+<a href="{% url 'borrow_history' %}"
+    class="action-button2">
+    過去の履歴を見る
+</a>
+</div>
 
 <!--</div>-->
 <table border="1">
     <tr>
+        <th class="number-header">No.</th>
+        <th class="title">タイトル</th>
+        <th class="author">著者</th>
         <th class="date">返却期限</th>
-        <th class="title">タイトル／著者</th>
         <th class="location">保存場所</th>
-        <th class="date">返却</th>
+        <th class="button">返却</th>
     </tr>
     {% for borrow in borrows %}
     <tr>
-        <td>{{ borrow.due_date }}</td>
+        <td class="number">
+            {{ forloop.counter }}
+        </td>
         <td>
             <a href="{% url 'book_detail' borrow.stock.book.id %}">
-                {{ borrow.stock.book.title }}／{{ borrow.stock.book.author }}
+                {{ borrow.stock.book.title }}
             </a>
         </td>
+        <td>{{ borrow.stock.book.author }}</td>
+        <td>{{ borrow.due_date|date:"Y-m-d" }}</td>
         <td>{{ borrow.stock.location }}</td>
-        <td>
+        <td class="position-center">
             <a href="{% url 'return_book' borrow.id %}"
                 class="action-button3">
                 返却する
@@ -41,12 +52,6 @@
     </tr>
     {% endfor %}
 </table>
-<div class="my-history">
-<a href="{% url 'borrow_history' %}"
-    class="action-button2">
-    過去の履歴を見る
-</a>
-</div>
 
 <br>
 
@@ -55,16 +60,22 @@
 <h3>予約中の本</h3>
 <table border="1">
     <tr>
-        <th class="title">タイトル／著者</th>
-        <th class="date">予約日</th>
+        <th class="number-header">No.</th>
+        <th class="title">タイトル</th>
+        <th class="author">著者</th>
+        <th class="button">予約日</th>
     </tr>
     {% for reservation in reservations %}
     <tr>
+        <td class="number">
+            {{ forloop.counter }}
+        </td>
         <td>
             <a href="{% url 'book_detail' reservation.book.id %}">
-                {{ reservation.book.title }}／{{ reservation.book.author }}
+                {{ reservation.book.title }}
             </a>
         </td>
+        <td>{{ reservation.book.author }}</td>
         <td>
             {{ reservation.reserved_at|date:"Y-m-d" }}
         </td>
@@ -83,17 +94,23 @@
 <h3>取り置き中の本</h3>
 <table border="1">
     <tr>
-        <th class="title">タイトル／著者</th>
-        <th class="date">受取</th>
+        <th class="number-header">No.</th>
+        <th class="title">タイトル</th>
+        <th class="author">著者</th>
+        <th class="button">受取</th>
     </tr>
     {% for hold in hold_stocks %}
     <tr>
-        <td>
-            <a href="{% url 'book_detail' hold.stock.book.id %}">
-                {{ hold.stock.book.title }}／{{ hold.stock.book.author }}
-            </a>
+        <td class="number">
+            {{ forloop.counter }}
         </td>
         <td>
+            <a href="{% url 'book_detail' hold.stock.book.id %}">
+                {{ hold.stock.book.title }}
+            </a>
+        </td>
+        <td>{{ hold.stock.book.author }}</td>
+        <td class="position-center">
             <a href="{% url 'pickup_confirm' hold.id %}"
                 class="action-button">
                 受け取る

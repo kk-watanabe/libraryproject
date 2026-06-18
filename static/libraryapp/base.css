@@ -110,6 +110,7 @@ form button {
 
 table {
     border-collapse: collapse;
+    width: 100%;
 }
 
 th {
@@ -315,17 +316,30 @@ td:first-child {
     white-space: nowrap;
 }
 
-.title {
-    width: 480px;
+.number-header {
+    width: 40px;
 }
 
-.publisher {
-    width: 110px;
-    white-space: nowrap;
+.title {
+    width: 200px;
+}
+
+.author {
+    width: 200px;
 }
 
 .date {
-    width: 110px;
+    width: 80px;
+    white-space: nowrap;
+}
+
+.location {
+    width: 80px;
+    white-space: nowrap;
+}
+
+.button {
+    width: 120px;
     white-space: nowrap;
 }
 
@@ -340,18 +354,14 @@ td:first-child {
 
 .my-borrowed-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    margin-top: 16px;
     margin-bottom: 16px;
 }
 
 .my-borrowed-header h3 {
-    margin: 10px;
-}
-
-.my-history {
-    align-items: center;
-    margin-top: 16px;
+    margin: 0;
 }
 
 .number {
@@ -359,6 +369,6 @@ td:first-child {
     width: 40px;
 }
 
-.number-header {
-    width: 40px;
+.position-center {
+    text-align: center;
 }

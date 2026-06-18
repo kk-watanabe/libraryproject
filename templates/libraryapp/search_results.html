@@ -13,7 +13,8 @@
 <table border="1">
     <tr>
         <th class="number-header">No.</th>
-        <th class="title">タイトル／著者</th>
+        <th class="title">タイトル</th>
+        <th class="author">著者</th>
         <th class="publisher">出版社</th>
         <th class="date">出版日</th>
         <th class="stock_count">蔵書数</th>
@@ -25,11 +26,12 @@
         </td>
         <td>
             <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
-                {{ book.title }}／{{ book.author }}
+                {{ book.title }}
             </a>
         </td>
+        <td>{{ book.author }}</td>
         <td>{{ book.publisher }}</td>
-        <td>{{ book.publication_date }}</td>
+        <td>{{ book.publication_date|date:"Y-m-d" }}</td>
         <td class="stock_count_td">{{ book.stock_count }}</td>
     </tr>
     {% empty %}

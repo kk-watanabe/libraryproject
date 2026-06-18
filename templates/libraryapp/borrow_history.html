@@ -9,11 +9,12 @@
 
 <table>
     <tr>
-        <th>No.</th>
-        <th class="history-date">貸出日</th>
-        <th class="history-date">返却日</th>
-        <th class="history-title">タイトル／著者</th>
-        <th class="history-location">保存場所</th>
+        <th class="number-header">No.</th>
+        <th class="title">タイトル</th>
+        <th class="author">著者</th>
+        <th class="date">貸出日</th>
+        <th class="date">返却日</th>
+        <th class="location">保存場所</th>
     </tr>
 
     {% for history in histories %}
@@ -23,19 +24,21 @@
         </td>
 
         <td>
+            <a href="{% url 'book_detail' history.stock.book.id %}">
+                {{ history.stock.book.title }}
+            </a>
+        </td>
+
+        <td>
+            {{ history.stock.book.author }}
+        </td>
+
+        <td>
             {{ history.borrowed_at|date:"Y-m-d" }}
         </td>
 
         <td>
             {{ history.returned_at|date:"Y-m-d" }}
-        </td>
-
-        <td>
-            <a href="{% url 'book_detail' history.stock.book.id %}">
-                {{ history.stock.book.title }}
-                ／
-                {{ history.stock.book.author }}
-            </a>
         </td>
 
         <td>
