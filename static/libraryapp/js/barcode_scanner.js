@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fetchButton = document.createElement("button");
     fetchButton.type = "button";
     fetchButton.textContent = "📚 書誌情報取得";
+    button.style.marginRight = "10px";
     fetchButton.style.padding = "4px 8px";
     fetchButton.style.whiteSpace = "nowrap";
 
