@@ -38,7 +38,7 @@
             </tr> 
             <tr> 
                 <th><strong>出版日</strong></th> 
-                <td>{{ book.publication_date }}</td> 
+                <td>{{ book.publication_date|date:"Y-m-d" }}</td> 
             </tr>
             <tr>
                 <th>ISBN</th>
