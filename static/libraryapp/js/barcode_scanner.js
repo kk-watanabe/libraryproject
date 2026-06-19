@@ -9,20 +9,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "📷 バーコードを読み取る";
-    button.style.marginLeft = "10px";
     button.style.marginRight = "10px";
     button.style.whiteSpace = "nowrap";
-
-    isbnInput.parentNode.appendChild(button);
 
     const fetchButton = document.createElement("button");
     fetchButton.type = "button";
     fetchButton.textContent = "📚 書誌情報取得";
-    button.style.marginRight = "10px";
-    fetchButton.style.padding = "4px 8px";
+    fetchButton.style.marginRight = "10px";
     fetchButton.style.whiteSpace = "nowrap";
 
-    isbnInput.parentNode.appendChild(fetchButton);
+    const buttonContainer = document.createElement("div");
+    buttonContainer.style.display = "flex";
+    buttonContainer.style.flexDirection = "column";
+    buttonContainer.style.gap = "8px";
+    buttonContainer.style.marginLeft = "10px";
+
+    buttonContainer.appendChild(button);
+    buttonContainer.appendChild(fetchButton);
+
+    isbnInput.parentNode.appendChild(buttonContainer);
+
 
     fetchButton.addEventListener("click", async function () {
 
@@ -36,8 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const response = await fetch(
             `/library/api/book-info/?isbn=${isbn}`
         );
-
-        console.log(response.status);
 
         if (!response.ok) {
             alert("書誌情報を取得できませんでした");

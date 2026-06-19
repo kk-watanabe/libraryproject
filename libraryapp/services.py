@@ -15,7 +15,7 @@ def fetch_book_by_isbn(isbn):
 
     response = requests.get(url)
 
-    if response.status_code != 200:
+    if response.status_code != 200: # エラーチェック
         return None
 
     data = response.json()

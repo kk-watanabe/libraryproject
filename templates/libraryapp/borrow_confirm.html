@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>貸出確認</h2>
-<p><strong>{{ stock.book.title }}／{{ stock.book.author }}</strong></p>
+<p><strong>『{{ stock.book.title }}／{{ stock.book.author }}』</strong></p>
 <br>
 <form method="post">
     {% csrf_token %}
@@ -19,7 +19,7 @@
             required
         >
     </div>
-    <small>&nbsp;&nbsp;返却予定日を選択してください。貸出期間は<strong>最大30日まで</strong>です。</small>
+    <small>&nbsp;&nbsp;返却予定日を選択してください。貸出期間は<strong>最大30日間まで</strong>です。</small>
     <br><br><br>
     
     <button type="submit">貸出確定</button>
