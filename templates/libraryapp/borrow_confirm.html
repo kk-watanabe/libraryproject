@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>貸出確認</h2>
-<p><strong>『{{ stock.book.title }}／{{ stock.book.author }}』</strong></p>
+<p><h3><strong>『{{ stock.book.title }}／{{ stock.book.author }}』</strong></h3></p>
 <br>
 <form method="post">
     {% csrf_token %}

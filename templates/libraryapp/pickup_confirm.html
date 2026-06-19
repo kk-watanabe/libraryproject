@@ -5,7 +5,7 @@
 {% block content %}
 <h2>取り置き本の受取確認</h2>
 
-<p><strong>『{{ hold.stock.book.title }}／{{ hold.stock.book.author }}』</strong></p>
+<p><h3><strong>『{{ hold.stock.book.title }}／{{ hold.stock.book.author }}』</strong></h3></p>
 <br>
 <form method="post"
       action="{% url 'pickup_borrow' hold.id %}">

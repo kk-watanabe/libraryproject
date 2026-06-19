@@ -20,6 +20,8 @@
             <p>{{ form.password2.label_tag }}{{ form.password2 }}</p>
             <button type="submit">サインアップ</button>
         </form>
+        <br>
+        登録済ユーザーの方：<a href={% url 'login' %}>ログイン</a>
     </div>
 </body>
 </html>
