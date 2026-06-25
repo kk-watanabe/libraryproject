@@ -9,7 +9,7 @@ class ReviewForm(forms.ModelForm):
         widgets = {
             "comment": forms.Textarea(
                 attrs={
-                    "rows": 5,
+                    "rows": 10,
                     "placeholder": "レビューを入力してください"
                 }
             )

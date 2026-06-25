@@ -61,7 +61,10 @@ class Borrow(models.Model):
     borrowed_at = models.DateTimeField(default=timezone.now)
     due_date = models.DateField()
     returned_at = models.DateTimeField(null=True, blank=True)
-        
+
+    class Meta:
+        ordering = ["due_date"]
+
     def __str__(self):
         return f"{self.stock.book.title} - {self.user.username}"
 
