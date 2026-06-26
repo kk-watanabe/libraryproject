@@ -44,7 +44,7 @@
 | Category  | Technology Stack |
 | ------------- | ------------- |
 | Frontend  | HTML/CSS, JavaScript |
-| Backend  | Python3.12.3, Django6.0.2 |
+| Backend  | Python3.12.3, Django6.0.2, html5-qrcode, openBD |
 | Database | SQLite |
 
 <br>
