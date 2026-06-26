@@ -43,9 +43,11 @@
 ## 使用技術
 | Category  | Technology Stack |
 | ------------- | ------------- |
-| Frontend  | HTML/CSS, JavaScript |
-| Backend  | Python, Django, html5-qrcode, openBD API |
+| Frontend  | HTML, CSS, JavaScript |
+| Backend  | Python, Django |
 | Database | SQLite |
+| External Services	| openBD API, Google Books API |
+| Libraries	| html5-qrcode |
 
 <br>
 
