@@ -6,7 +6,7 @@
 <form method="get" action="{% url 'search_results' %}">
     <label for="title">検索</label>
     <input type="text" name="q" placeholder="検索キーワード入力"
-        value="{{ request.GET.q|default_if_none:''}}">
+        value="{{ request.GET.q|default_if_none:''}}" required>
     <button type="submit">検索</button>
 </form>
 <hr>
@@ -43,5 +43,33 @@
 
 <br>
 
+{% if is_paginated %}
+<div class="pagination">
+
+    {% if page_obj.has_previous %}
+        <a href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">
+            &laquo; 前へ
+        </a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+            <span class="current">{{ num }}</span>
+
+        {% elif num >= page_obj.number|add:"-3" and num <= page_obj.number|add:"3" %}
+            <a href="?q={{ request.GET.q }}&page={{ num }}">
+                {{ num }}
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">
+            次へ &raquo;
+        </a>
+    {% endif %}
+
+</div>
+{% endif %}
 <a href="{% url 'home' %}">TOPページに戻る</a>
 {% endblock content %}

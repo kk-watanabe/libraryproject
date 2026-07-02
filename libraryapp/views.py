@@ -12,6 +12,7 @@ from .forms import ReviewForm
 from django.urls import reverse
 from django.http import JsonResponse
 from .services import fetch_book_by_isbn
+from django.contrib import messages
 
 # Create your views here.
 class SearchView(LoginRequiredMixin, TemplateView):
@@ -22,28 +23,27 @@ class SearchResultsView(LoginRequiredMixin, ListView):
     model = Book
     template_name = "libraryapp/search_results.html"
     context_object_name = "book_list"
-    paginate_by = 30
+    paginate_by = 15
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.GET.get('q', '')
+        query = self.request.GET.get('q', '').strip()
 
-        # 検索フィルタリング
-        return queryset.filter(
-                Q(title__icontains=query) |
-                Q(author__icontains=query) |
-                Q(publisher__icontains=query)
-        )
+        if not query:
+            return Book.objects.none()
 
-    # ページネーションの設定
-    #paginator = Paginator(book_list, 5) # 1ページに5件表示
-    #page_number = request.GET.get('page')
-    #page_obj = paginator.get_page(page_number)
+        keywords = query.split()
 
-    #return render(request, 'library/search_results.html', {
-    #    'page_obj': page_obj,
-    #    'query': query # 検索キーワード保持
-    #})
+        condition = Q()
+
+        for keyword in keywords:
+            condition &= (
+                Q(title__icontains=keyword) |
+                Q(author__icontains=keyword) |
+                Q(publisher__icontains=keyword)
+            )
+
+        return queryset.filter(condition)
 
 
 class BookDetailView(LoginRequiredMixin, DetailView):
@@ -54,61 +54,73 @@ class BookDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        available_stocks = self.object.stocks.filter(
+        stocks = self.object.stocks
+        
+        stocks_count = stocks.count()
+        available_stock = stocks.filter(
             is_available=True
-        )
-        
-        borrowed_stocks = self.object.stocks.filter(
-            is_available=False
-        )
-        
-        stock = available_stocks.first()
-        stock_count = available_stocks.count()
+        ).first()
+
+        available_stocks_count = stocks.filter(
+            is_available=True
+        ).count()
         reservation_count = self.object.reservations.count()
         
         # 状態判定
-        if reservation_count != 0 and reservation_count >= stock_count:
+        if stocks_count == 0: #蔵書なし
+            status = "no_stocks"
+            label = "蔵書なし"
+        elif reservation_count != 0:
             status = "reservable"
             label = "貸出中（予約あり）"
-        elif stock_count == 0:
+        elif available_stocks_count == 0:
             status = "borrowed"
             label = "貸出中"
         else:
             status = "available"
             label = "貸出可能"
 
-        my_borrowed = False
-        for stock in borrowed_stocks:
-            my_borrowed = stock.borrows.filter(
-                user=self.request.user,
-                returned_at__isnull=True,
-            ).exists()
-            if my_borrowed:break
+        my_borrowed = Borrow.objects.filter(
+            stock__book=self.object,
+            user=self.request.user,
+            returned_at__isnull=True,
+        ).exists()
         
         my_reserved = self.object.reservations.filter(
             user=self.request.user
         ).exists()
         
-        my_hold = False
-        for stock in borrowed_stocks:
-            my_hold = stock.hold.filter(
-                user=self.request.user,
-                is_pickedup=False,
-            ).exists()
-            if my_hold:break
+        my_hold = HoldStock.objects.filter(
+            stock__book=self.object,
+            user=self.request.user,
+            is_pickedup=False,
+        ).exists()
         
-        context["stock"] = stock
+        context["stock"] = available_stock
         context["book_status"] = status
         context["status_label"] = label
         context["my_borrowed"] = my_borrowed
         context["my_reserved"] = my_reserved
         context["my_hold"] = my_hold
-        context["reviews"] = self.object.reviews.select_related(
-            "user"
+        reviews = (
+            self.object.reviews
+            .select_related("user")
+            .order_by("-created_at")
         )
+
+        paginator = Paginator(reviews, 1)   # 1ページ5件
+
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["reviews"] = page_obj
+        context["page_obj"] = page_obj
+        context["is_paginated"] = page_obj.has_other_pages()
         context["bookmeter_url"] = (
             f"https://bookmeter.com/search?keyword={self.object.isbn}"
         )
+
+        context["search_query"] = self.request.GET.urlencode()
         
         return context
     
@@ -133,21 +145,30 @@ class BorrowConfirmView(LoginRequiredMixin, View):
         )
     
     def post(self, request, *args, **kwargs):
-        stock = get_object_or_404(Stock, pk=kwargs["stock_id"])
-        
         due_date = request.POST.get("due_date")
 
-        borrow = Borrow.objects.create(
-            stock=stock,
-            user=request.user,
-            due_date=due_date
-        )
-        
-        stock.is_available = False
-        stock.save()
-        
+        with transaction.atomic():
+            stock = (
+                Stock.objects
+                .select_for_update()
+                .get(pk=kwargs["stock_id"])
+            )
+
+            if not stock.is_available:
+                messages.error(request, "この本は既に貸出中です。")
+                return redirect("book_detail", pk=stock.book.pk)
+
+            borrow = Borrow.objects.create(
+                stock=stock,
+                user=request.user,
+                due_date=due_date,
+            )
+
+            stock.is_available = False
+            stock.save()
+
         return redirect(
-            'borrow_complete',
+            "borrow_complete",
             stock_id=stock.pk,
             borrow_id=borrow.pk,
         )
@@ -377,6 +398,7 @@ class BorrowHistoryView(LoginRequiredMixin, ListView):
     model = Borrow
     template_name = "libraryapp/borrow_history.html"
     context_object_name = "histories"
+    paginate_by = 15
 
     def get_queryset(self):
         return (
@@ -408,3 +430,16 @@ def book_info_api(request):
         )
 
     return JsonResponse(data)
+
+
+class ReservationCancelView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        reservation = get_object_or_404(
+            Reservation,
+            pk=pk,
+            user=request.user
+        )
+
+        reservation.delete()
+
+        return redirect("mypage")

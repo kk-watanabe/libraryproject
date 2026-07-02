@@ -157,6 +157,11 @@ td:first-child {
     color: #856404;
 }
 
+.status-no_stocks {
+    background-color: #676766;
+    color: #dcd9d4;
+}
+
 .action-button {
     display: inline-block;
     background-color: #218838;
@@ -182,6 +187,16 @@ td:first-child {
 .action-button3 {
     display: inline-block;
     background-color: #365fc8;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cancel-button {
+    display: inline-block;
+    background-color: #df4f97;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
@@ -370,4 +385,40 @@ td:first-child {
 
 .position-center {
     text-align: center;
+}
+
+/* ---------- ページネーション ---------- */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin: 30px 0;
+}
+
+.pagination a,
+.pagination span {
+    min-width: 36px;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #34495e;
+    background: white;
+    box-sizing: border-box;
+}
+
+.pagination a:hover {
+    background-color: #55bcc1;
+    color: white;
+    border-color: #55bcc1;
+}
+
+.pagination .current {
+    background-color: #218838;
+    color: white;
+    border-color: #218838;
+    font-weight: bold;
 }

@@ -26,8 +26,14 @@ SECRET_KEY = 'django-insecure-r^g9khanetezki94_rekdddbdu6atonl^x&j3u7+eyn(6iff4+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+# libraryproject/settings.py
 
+# 修正前（例）
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+# 修正後：'testserver' を追加します
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 
 # Application definition
 

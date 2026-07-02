@@ -6,7 +6,7 @@
 <h2>蔵書検索</h2>
 <hr>
 <form class="search-form" action="{% url 'search_results' %}" method="get">
-    <input type="text" name="q" placeholder="検索キーワードを入力">
+    <input type="text" name="q" placeholder="検索キーワードを入力" required>
     <button type="submit">検索</button>
 </form>
 {% endblock content %}

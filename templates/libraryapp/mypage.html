@@ -65,6 +65,7 @@
         <th class="author">著者</th>
         <th class="date">予約日</th>
         <th class="date">待ち人数</th>
+        <th class="button">キャンセル</th>
     </tr>
     {% for reservation in reservations %}
     <tr>
@@ -81,12 +82,22 @@
             {{ reservation.reserved_at|date:"Y-m-d" }}
         </td>
         <td>
-            あと{{ reservation.waiting_count }}人
+            前に{{ reservation.waiting_count }}人
+        </td>
+        <td class="position-center">
+            <form method="post"
+                action="{% url 'reservation_cancel' reservation.id %}">
+                {% csrf_token %}
+                <button type="submit"
+                    class="cancel-button">
+                    キャンセル
+                </button>
+            </form>
         </td>
     </tr>
     {% empty %}
     <tr>
-        <td colspan="5">予約中の本はありません。</td>
+        <td colspan="6">予約中の本はありません。</td>
     </tr>
     {% endfor %}
 </table>

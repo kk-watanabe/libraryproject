@@ -5,9 +5,12 @@
 {% block content %}
 <h2>返却完了</h2>
 <p>ご利用いただきありがとうございます。</p>
-<p>『{{ stock.book.title }}／{{ stock.book.author }}』の返却を受け付けました。</p>
-<p>下記の指定の場所へお戻しくださいますようお願い申し上げます。</p><br>
-<p>保存場所：{{ stock.location }}</p><br>
+<p>『{{ stock.book.title }}／{{ stock.book.author }}』の返却を受け付けました。</p><br>
+
+<p>まだお手元に本がある方は、元の場所へすみやかにお戻しくださいますようお願いします。</p>
+<p>【保存場所】{{ stock.location }}</p><br>
+
+<p>またのご利用をお待ちしております。</p><br>
 
 <a href="{% url 'mypage' %}">マイページへ戻る</a>
 {% endblock content %}

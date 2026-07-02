@@ -20,7 +20,7 @@
     {% for history in histories %}
     <tr>
         <td class="number">
-            {{ forloop.counter }}
+            {{ page_obj.start_index|add:forloop.counter0 }}
         </td>
 
         <td>
@@ -56,6 +56,37 @@
 </table>
 
 <br>
+
+{% if is_paginated %}
+<div class="pagination">
+
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">
+            &laquo; 前へ
+        </a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+            <span class="current">
+                {{ num }}
+            </span>
+
+        {% elif num >= page_obj.number|add:"-3" and num <= page_obj.number|add:"3" %}
+            <a href="?page={{ num }}">
+                {{ num }}
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">
+            次へ &raquo;
+        </a>
+    {% endif %}
+
+</div>
+{% endif %}
 
 <a href="{% url 'mypage' %}">
     マイページへ戻る

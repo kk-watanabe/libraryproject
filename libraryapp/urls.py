@@ -12,6 +12,7 @@ urlpatterns = [
     path('return/<int:borrow_id>/', views.ReturnBookView.as_view(), name='return_book'),
     path('return/<int:stock_id>/complete/', views.ReturnCompleteView.as_view(), name='return_complete'),
     path('reserve/<int:book_id>/', views.ReserveBookView.as_view(), name='reserve_book'),
+    path("reservation/<int:pk>/cancel/", views.ReservationCancelView.as_view(), name="reservation_cancel"),
     path('pickup/<int:pk>/', views.PickupBorrowView.as_view(), name='pickup_borrow'),
     path('pickup/confirm/<int:pk>/', views.PickupConfirmView.as_view(), name="pickup_confirm"),
     path('book/<int:book_id>/review/', views.ReviewCreateView.as_view(), name="review_create"),
