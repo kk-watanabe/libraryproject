@@ -21,22 +21,22 @@
 
 |TOP画面|検索結果一覧画面|
 |---|---|
-|<img src="https://i.imgur.com/CKZY3jC.png" width="500">|<img src="https://i.imgur.com/5meptue.png" width="500">|
+|<img src="https://i.imgur.com/CKZY3jC.png" width="500">|<img src="https://i.imgur.com/hcd2T14.png" width="500">|
 | TOP画面はシンプルに検索フォームのみ配置しました。<br>上部に固定のナビゲーションバーを設置。<br>どのページからでもTOP画面に戻れます。 | 一覧画面では検索ワードを保持したまま残します。<br>検索条件はAND検索となっており、検索結果を絞ることが可能です。<br>またページネーション機能もついています。 |
 
 |詳細画面|貸出確認画面|
 |---|---|
-|<img src="https://i.imgur.com/XTtOVhl.png" width="500">|<img src="https://i.imgur.com/d5FKXP4.png" width="500">|
+|<img src="https://i.imgur.com/ciIQt7Y.png" width="500">|<img src="https://i.imgur.com/82yzBDG.png" width="500">|
 | 詳細画面では、書影、基本情報、貸出状況が確認できます。<br>貸出状況に応じてユーザーは貸出・予約を行います。<br>また内部／外部レビュー機能によって本のレビューを投稿・閲覧することもできます。 | 貸出確認画面では貸出期間をカレンダーから任意選択できます。<br>１回の貸出につき最大30日間まで借りられます。 |
 
 |マイページ|貸出返却履歴|
 |---|---|
-|<img src="https://i.imgur.com/H9OqTXv.png" width="500">|<img src="https://i.imgur.com/Gi70ON3.png" width="500">|
+|<img src="https://i.imgur.com/T1agwU2.png" width="500">|<img src="https://i.imgur.com/vf2ToLs.png" width="500">|
 | マイページでは貸出中の本、予約中の本、取り置き中の本を確認できます。<br>また、返却、予約キャンセル、取り置き本の受取もマイページで行います。 | マイページ内のリンクから貸出返却履歴を見ることができます。 |
 
 |ISBNスキャン|書籍情報自動取得|
 |---|---|
-|<img src="https://i.imgur.com/OS4MrAJ.png" width="500">|<img src="https://i.imgur.com/Eo5coFp.png" width="500">|
+|<img src="https://i.imgur.com/OS4MrAJ.png" width="500">|<img src="https://i.imgur.com/ReJgNbz.png" width="500">|
 | Django標準の管理サイトをカスタマイズしました。<br>PC/スマホ付属のカメラ機能を使ってISBNのバーコードをスキャンすると、自動でISBNを取得します。 | ISBN欄にナンバーを入力した状態で「書籍情報取得」ボタンを押すと、自動で書籍情報を取得します。 |
 
 <br>
@@ -70,8 +70,8 @@
 | Category  | Technology Stack |
 | ------------- | ------------- |
 | Frontend  | HTML, CSS, JavaScript |
-| Backend  | Python, Django |
-| Database | SQLite |
+| Backend  | Python3.12.3, Django6.0.2 |
+| Database | SQLite3.45.1 |
 | External Services	| openBD API, Google Books API |
 | Libraries	| html5-qrcode |
 
