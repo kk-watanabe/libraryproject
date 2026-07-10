@@ -6,7 +6,7 @@ from datetime import timedelta
 # Create your models here.
 class Book(models.Model):
     isbn = models.CharField(
-        max_length=17,
+        max_length=20,
         help_text='ISBN-10 または ISBN-13（ハイフン可）',
         verbose_name='ISBN',
         unique=True,

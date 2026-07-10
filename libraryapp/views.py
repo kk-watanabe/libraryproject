@@ -102,25 +102,12 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         context["my_borrowed"] = my_borrowed
         context["my_reserved"] = my_reserved
         context["my_hold"] = my_hold
-        reviews = (
-            self.object.reviews
-            .select_related("user")
-            .order_by("-created_at")
+        context["reviews"] = self.object.reviews.select_related(
+            "user"
         )
-
-        paginator = Paginator(reviews, 1)   # 1ページ5件
-
-        page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-
-        context["reviews"] = page_obj
-        context["page_obj"] = page_obj
-        context["is_paginated"] = page_obj.has_other_pages()
         context["bookmeter_url"] = (
             f"https://bookmeter.com/search?keyword={self.object.isbn}"
         )
-
-        context["search_query"] = self.request.GET.urlencode()
         
         return context
     
@@ -318,7 +305,7 @@ class PickupBorrowView(LoginRequiredMixin, View):
         
         due_date = request.POST.get("due_date")
 
-        Borrow.objects.create(
+        borrow = Borrow.objects.create(
             user=request.user,
             stock=hold.stock,
             due_date=due_date,
@@ -327,7 +314,11 @@ class PickupBorrowView(LoginRequiredMixin, View):
         hold.is_pickedup = True
         hold.delete()
         
-        return redirect("mypage")
+        return redirect(
+            "borrow_complete",
+            stock_id=hold.stock.pk,
+            borrow_id=borrow.pk,
+        )
 
 
 class PickupConfirmView(LoginRequiredMixin, View):

@@ -5,6 +5,7 @@ from .models import Book, Stock, Location, Borrow, Reservation, HoldStock, Revie
 import requests
 from datetime import datetime
 from .services import fetch_book_by_isbn
+from django.db import transaction
 
 # Register your models here.
 class StockInline(admin.TabularInline):
@@ -55,24 +56,25 @@ class BookAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
 
-        # ISBNのみ入力された場合に自動取得
-        if obj.isbn and not obj.title:
+        with transaction.atomic():
+            # ISBNのみ入力された場合に自動取得
+            if obj.isbn and not obj.title:
 
-            data = fetch_book_by_isbn(obj.isbn)
+                data = fetch_book_by_isbn(obj.isbn)
 
-            if data:
-                obj.title = data["title"]
-                obj.author = data["author"]
-                obj.publisher = data["publisher"]
-                obj.publication_date = data["publication_date"]
-                obj.cover_url = data["cover_url"]
+                if data:
+                    obj.title = data["title"]
+                    obj.author = data["author"]
+                    obj.publisher = data["publisher"]
+                    obj.publication_date = data["publication_date"]
+                    obj.cover_url = data["cover_url"]
 
-        super().save_model(
-            request,
-            obj,
-            form,
-            change
-        )
+            super().save_model(
+                request,
+                obj,
+                form,
+                change
+            )
 
     @admin.display(description="表紙")
     def cover_preview(self, obj):
@@ -83,7 +85,7 @@ class BookAdmin(admin.ModelAdmin):
                 obj.cover_url
             )
 
-        return "-"
+        return "None"
 
     @admin.display(description="蔵書数")
     def stock_count(self, obj):

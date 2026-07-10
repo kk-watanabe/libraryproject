@@ -22,7 +22,7 @@
     {% for book in book_list %}
     <tr>
         <td class="number">
-            {{ forloop.counter }}
+            {{ page_obj.start_index|add:forloop.counter0 }}
         </td>
         <td>
             <a href="{% url 'book_detail' book.id %}?{{ request.GET.urlencode }}">
