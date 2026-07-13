@@ -198,9 +198,9 @@ class MyPageView(LoginRequiredMixin, ListView):
         ).select_related("book")
         
         for reservation in reservations:
-            reservation.waiting_count = Reservation.objects.filter(
+            reservation.priority = Reservation.objects.filter(
                 book=reservation.book,
-                reserved_at__lt=reservation.reserved_at
+                reserved_at__lte=reservation.reserved_at
             ).count()
         
         context['reservations'] = reservations

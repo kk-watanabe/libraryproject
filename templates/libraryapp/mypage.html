@@ -64,7 +64,7 @@
         <th class="title">タイトル</th>
         <th class="author">著者</th>
         <th class="date">予約日</th>
-        <th class="date">待ち人数</th>
+        <th class="date">予約順位</th>
         <th class="button">キャンセル</th>
     </tr>
     {% for reservation in reservations %}
@@ -82,7 +82,7 @@
             {{ reservation.reserved_at|date:"Y-m-d" }}
         </td>
         <td>
-            前に{{ reservation.waiting_count }}人
+            {{ reservation.priority }}
         </td>
         <td class="position-center">
             <form method="post"
