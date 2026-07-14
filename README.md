@@ -27,12 +27,12 @@
 
 |マイページ|貸出返却履歴|
 |---|---|
-|<img src="https://i.imgur.com/T1agwU2.png" width="500">|<img src="https://i.imgur.com/vf2ToLs.png" width="500">|
+|<img src="https://i.imgur.com/VQ5aKNt.png" width="500">|<img src="https://i.imgur.com/vf2ToLs.png" width="500">|
 | マイページでは貸出中の本、予約中の本、取り置き中の本を確認できます。<br>また、返却、予約キャンセル、取り置き本の受取もマイページで行います。 | マイページ内のリンクから貸出返却履歴を見ることができます。 |
 
 |ISBNスキャン|書籍情報自動取得|
 |---|---|
-|<img src="https://i.imgur.com/OS4MrAJ.png" width="500">|<img src="https://i.imgur.com/ReJgNbz.png" width="500">|
+|<img src="https://i.imgur.com/qWBpW3p.png" width="500">|<img src="https://i.imgur.com/7vV36tW.png" width="500">|
 | Django標準の管理サイトをカスタマイズしました。<br>PC/スマホ付属のカメラ機能を使ってISBNのバーコードをスキャンすると、自動でISBNを取得します。 | ISBN欄にナンバーを入力した状態で「書籍情報取得」ボタンを押すと、自動で書籍情報を取得します。 |
 
 <br>
