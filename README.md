@@ -1,6 +1,6 @@
 # README
 
-![バナー](https://i.imgur.com/71QcNZm.jpeg)
+![バナー](https://i.imgur.com/OCEGAy9.jpeg)
 
 <br>
 
